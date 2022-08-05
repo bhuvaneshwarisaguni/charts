@@ -123,6 +123,10 @@ spec:
             - name:  ED_WORKFLOWS
               value: {{ .Values.edWorkflows }}
             {{- end }}
+             {{- if .Values.edDiscoverKubernetesControllers }}
+            - name: ED_DISCOVER_KUBERNETES_CONTROLLERS
+              value: "1"
+            {{- end }}
             - name:  ED_LEADER_ELECTION_ENABLED
             {{- if .Values.edDisableLeaderElection }}
               value: "0"
@@ -237,7 +241,6 @@ spec:
             name: capturedrequests
             subPathExpr: $(POD_NAME)
         {{- end }}
-
       terminationGracePeriodSeconds: 10
       volumes:
         - name: varlog
