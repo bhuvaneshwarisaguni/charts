@@ -68,16 +68,14 @@ spec:
           env:
             {{- if .Values.apiKey }}
             - name:  ED_API_KEY
-              value: "{{ .Values.apiKey }}"
+              value: {{ .Values.apiKey | quote }}
             {{- end }}
-            {{- if .Values.secretApiKey }}
-            {{- if .Values.secretApiKey.name }}
+            {{- if and (and .Values.secretApiKey.name .Values.secretApiKey.key) .Values.secretApiKey.value }}
             - name:  ED_API_KEY
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.secretApiKey.name }}
                   key: {{ .Values.secretApiKey.key }}
-            {{- end }}
             {{- end }}
             {{- if .Values.storePort }}
             - name:  STORE_PORT
