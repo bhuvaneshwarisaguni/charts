@@ -23,14 +23,17 @@ spec:
   {{- end }}
   template:
     metadata:
-      annotations:
       {{- if .Values.annotations }}
+      annotations:
         {{- toYaml .Values.annotations | nindent 8 }}
       {{- end }}
       labels:
       {{- include "edgedelta.labels" . | nindent 8 }}
       {{- if .Values.labels }}
         {{- toYaml .Values.labels | nindent 8 }}
+      {{- end }}
+      {{- if .Values.edConfigContent }}
+        edgedelta/config-sha: {{ .Values.edConfigContent | sha256sum }}
       {{- end }}
         edgedelta/agent-type: processor
     spec:
@@ -42,6 +45,9 @@ spec:
       {{- if .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName }}
       {{- end }}
       containers:
         # agent container
@@ -69,13 +75,15 @@ spec:
             {{- if .Values.apiKey }}
             - name:  ED_API_KEY
               value: {{ .Values.apiKey | quote }}
-            {{- end }}
-            {{- if and (and .Values.secretApiKey.name .Values.secretApiKey.key) .Values.secretApiKey.value }}
+            {{- else if and .Values.secretApiKey.name .Values.secretApiKey.key }}
+            {{ $lookupResult := lookup "v1" "Secret" .Release.Namespace .Values.secretApiKey.name }}
+            {{- if $lookupResult }}
             - name:  ED_API_KEY
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.secretApiKey.name }}
                   key: {{ .Values.secretApiKey.key }}
+            {{- end }}
             {{- end }}
             {{- if .Values.storePort }}
             - name:  STORE_PORT
