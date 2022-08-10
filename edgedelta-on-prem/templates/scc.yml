@@ -1,0 +1,42 @@
+{{- if .Values.usingOpenShift }}
+apiVersion: security.openshift.io/v1
+kind: SecurityContextConstraints
+metadata:
+  name: {{ include "edgedelta.onprem.fullname" . | quote }}
+  annotations:
+    helm.sh/hook: pre-install
+    helm.sh/hook-weight: "-9"
+    helm.sh/hook-delete-policy: before-hook-creation
+priority: 999
+fsGroup:
+  type: RunAsAny
+volumes:
+- configMap
+- downwardAPI
+- emptyDir
+- persistentVolumeClaim
+- projected
+- secret
+allowHostDirVolumePlugin: false
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: true
+allowPrivilegedContainer: false
+allowedCapabilities: null
+defaultAddCapabilities: null
+readOnlyRootFilesystem: false
+requiredDropCapabilities:
+- MKNOD
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: MustRunAs
+supplementalGroups:
+  type: RunAsAny
+groups:
+- system:cluster-admins
+users:
+- system:serviceaccount:{{ .Release.Namespace }}:{{ include "edgedelta.onprem.fullname" . }}
+{{- end }}

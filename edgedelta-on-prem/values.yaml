@@ -2,6 +2,7 @@ fullNameOverride: ""
 dnsSuffix: "svc.cluster.local"
 repository: "gcr.io/edgedelta"
 storageClassName: ""
+usingOpenShift: false # Should be true for OpenShift for smooth procedure
 
 # This should be enabled and edited for secure clusters such as OpenShift
 # podSecurityContext:
