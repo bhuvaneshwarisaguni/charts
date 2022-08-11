@@ -64,6 +64,12 @@ spec:
 
             # Retry until desired secrets are created
             retry kubectl get secret $accessKeyIdSecret -n {{ .Release.Namespace }} && kubectl get secret $secretKeySecret -n {{ .Release.Namespace }}
+
+            {{- if ne .Values.openfaas.functionNamespace .Release.Namespace }}
+            # Copy secret from {{ .Release.Namespace }} to {{ .Values.openfaas.functionNamespace }}
+            kubectl get secret $accessKeyIdSecret -n {{ .Release.Namespace }} -o yaml | sed 's/namespace: .*/namespace: {{ .Values.openfaas.functionNamespace }}/' | kubectl apply -f -
+            kubectl get secret $secretKeySecret -n {{ .Release.Namespace }} -o yaml | sed 's/namespace: .*/namespace: {{ .Values.openfaas.functionNamespace }}/' | kubectl apply -f -
+            {{- end }}
             {{- end }}
 
             export OPENFAAS_URL=http://gateway.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:8080

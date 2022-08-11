@@ -39,4 +39,11 @@ groups:
 - system:cluster-admins
 users:
 - system:serviceaccount:{{ .Release.Namespace }}:{{ include "edgedelta.onprem.fullname" . }}
+{{- if .Values.openFaas.enabled }} # openfaas
+{{- if .Values.openfaas.operator.create }}
+- system:serviceaccount:{{ .Release.Namespace }}:{{ .Release.Name }}-operator
+{{- else }}
+- system:serviceaccount:{{ .Release.Namespace }}:{{ .Release.Name }}-controller
+{{- end }}
+{{- end }}
 {{- end }}
