@@ -20,7 +20,9 @@ spec:
         k8s-app: scylladb
         {{- include "edgedelta.onprem.labels" . | nindent 8 }}
     spec:
+      {{- if .Values.scylla.useServiceAccount }}
       serviceAccountName: {{ include "edgedelta.onprem.fullname" . | quote }}
+      {{- end }}
       terminationGracePeriodSeconds: 10
       {{- if .Values.podSecurityContext }}
       securityContext:
@@ -36,6 +38,16 @@ spec:
         - --alternator-address=0.0.0.0
         - --alternator-port=8000
         - --alternator-write-isolation=always
+        - --developer-mode=0
+        - --overprovisioned=1
+        - --smp=$(CPU_COUNT)
+        env:
+        - name: CPU_COUNT
+          valueFrom:
+            resourceFieldRef:
+              containerName: scylladb
+              divisor: "1"
+              resource: limits.cpu
         resources:
           {{- toYaml .Values.scylla.resources | nindent 12 }}
         imagePullPolicy: Always

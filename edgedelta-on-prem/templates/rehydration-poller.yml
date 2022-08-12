@@ -18,7 +18,9 @@ spec:
         k8s-app: rehydration-poller
         {{- include "edgedelta.onprem.labels" . | nindent 8 }}
     spec:
+      {{- if .Values.rehydration.pollerOptions.useServiceAccount }}
       serviceAccountName: {{ include "edgedelta.onprem.fullname" . | quote }}
+      {{- end }}
       terminationGracePeriodSeconds: 10
       {{- if .Values.podSecurityContext }}
       securityContext:

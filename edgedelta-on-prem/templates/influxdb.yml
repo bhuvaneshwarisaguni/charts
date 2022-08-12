@@ -23,7 +23,9 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: influxdb-data
-      serviceAccountName:  {{ include "edgedelta.onprem.fullname" . | quote }}
+      {{- if .Values.influxdb.useServiceAccount }}
+      serviceAccountName: {{ include "edgedelta.onprem.fullname" . | quote }}
+      {{- end }}
       containers:
         - name: influxdb
           image: "{{ .Values.influxdb.image.repository }}:{{ .Values.influxdb.image.tag }}"

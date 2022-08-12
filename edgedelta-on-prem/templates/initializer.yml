@@ -21,7 +21,9 @@ spec:
         k8s-app: initializer
         {{- include "edgedelta.onprem.labels" . | nindent 8 }}
     spec:
+      {{- if .Values.initializer.useServiceAccount }}
       serviceAccountName: {{ include "edgedelta.onprem.fullname" . | quote }}
+      {{- end }}
       terminationGracePeriodSeconds: 10
       {{- if .Values.podSecurityContext }}
       securityContext:

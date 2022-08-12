@@ -36,6 +36,7 @@ okta:
 
 api:
   enabled: true
+  useServiceAccount: true
   masterSecret: "" # It will use a randomly-generated UUIDv4 if not set
   port: 4444
   hostName: ""
@@ -57,6 +58,7 @@ api:
 
 app:
   enabled: true
+  useServiceAccount: true
   port: 5555
   hostName: ""
   overrideApiUrl: "" # Default is https://<api_host_name>, however if this field is not empty, we will override api url with given one
@@ -81,6 +83,7 @@ rehydration:
 
   pollerOptions: # Only valid if deployment mode is "only_rehydration"
     enabled: false
+    useServiceAccount: true
     pollInterval: 10s
 
     resources:
@@ -93,6 +96,7 @@ rehydration:
 
   handlerOptions: # Only valid if deployment mode is "only_rehydration"
     enabled: false
+    useServiceAccount: true
     port: 8080
     replicaCount: 1
 
@@ -101,6 +105,7 @@ rehydration:
 
 initializer:
   enabled: true
+  useServiceAccount: true
 
   accessKeyIdName: "ed-scylladb-access-key-id"
   secretKeyName: "ed-scylladb-secret-key"
@@ -121,8 +126,9 @@ initializer:
 
 # Rest is the configuration for third party dependencies and Helm charts
 scylla:
-  image: scylladb/scylla:latest
+  image: scylladb/scylla:4.5.1
   enabled: true
+  useServiceAccount: true
 
   resources:
     limits:
@@ -165,6 +171,7 @@ scylla:
 
 influxdb:
   enabled: false
+  useServiceAccount: true
 
   image:
     repository: influxdb

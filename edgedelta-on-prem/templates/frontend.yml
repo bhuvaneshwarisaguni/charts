@@ -18,7 +18,9 @@ spec:
         k8s-app: admin-ui
         {{- include "edgedelta.onprem.labels" . | nindent 8 }}
     spec:
+      {{- if .Values.app.useServiceAccount }}
       serviceAccountName: {{ include "edgedelta.onprem.fullname" . | quote }}
+      {{- end }}
       {{- if .Values.podSecurityContext }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
