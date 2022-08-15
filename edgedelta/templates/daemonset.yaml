@@ -129,8 +129,8 @@ spec:
             - name:  ED_WORKFLOWS
               value: {{ .Values.edWorkflows }}
             {{- end }}
-             {{- if .Values.edDiscoverKubernetesControllers }}
-            - name: ED_DISCOVER_KUBERNETES_CONTROLLERS
+             {{- if .Values.edDisableControllerDiscovery }}
+            - name: ED_DISABLE_PARENT_K8S_CONTROLLER_DISCOVERY
               value: "1"
             {{- end }}
             - name:  ED_LEADER_ELECTION_ENABLED

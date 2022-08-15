@@ -26,8 +26,9 @@ edWorkflowPrefixes: ""
 edDisableLeaderElection: ""
 edTraceFiles: ""
 edSkipTlsVerify: ""
-edDiscoverKubernetesControllers: ""
 edConfigContent: ""
+
+edDisableControllerDiscovery: false
 
 # custom tags are comma separated key:val pairs. these are going to be attached to all outgoing data from agent to configured destination(s).
 edCustomTags: ""
@@ -109,6 +110,7 @@ resources:
 
 tolerations: {}
 nodeSelector: {}
+priorityClassName: ""
 
 updateStrategy:
   type: RollingUpdate
