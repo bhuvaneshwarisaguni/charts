@@ -30,7 +30,11 @@ spec:
       {{- end }}
       containers:
       - name: scylladb
+        {{- if .Values.scylla.useNonRoot.enabled }}
+        image: {{ .Values.scylla.useNonRoot.image }}
+        {{- else }}
         image: {{ .Values.scylla.image }}
+        {{- end }}
         ports:
           - containerPort: 8000
           - containerPort: 9042
@@ -89,7 +93,11 @@ metadata:
     {{- include "edgedelta.onprem.labels" . | nindent 4 }}
 data:
   scylla.yaml: |
+    {{- if .Values.scylla.useNonRoot.enabled }}
+    {{- deepCopy (fromYaml .Values.scylla.config) | merge (fromYaml .Values.scylla.nonRootConfigExtras) | toYaml | nindent 4 }}
+    {{- else }}
     {{- .Values.scylla.config | nindent 4 }}
+    {{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
