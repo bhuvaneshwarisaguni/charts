@@ -9,7 +9,10 @@ metadata:
     helm.sh/hook-delete-policy: before-hook-creation
 priority: 999
 fsGroup:
-  type: RunAsAny
+  type: MustRunAs
+  ranges:
+  - min: 1
+    max: 10000000001
 volumes:
 - configMap
 - downwardAPI
@@ -24,13 +27,15 @@ allowHostPID: false
 allowHostPorts: false
 allowPrivilegeEscalation: true
 allowPrivilegedContainer: false
-allowedCapabilities: null
+allowedCapabilities:
+- SYS_NICE
 defaultAddCapabilities: null
 readOnlyRootFilesystem: false
 requiredDropCapabilities:
 - MKNOD
 runAsUser:
-  type: RunAsAny
+  type: MustRunAsRange
+  range: 1,10000000001
 seLinuxContext:
   type: MustRunAs
 supplementalGroups:

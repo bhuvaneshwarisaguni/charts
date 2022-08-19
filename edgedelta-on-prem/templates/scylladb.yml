@@ -35,6 +35,12 @@ spec:
         {{- else }}
         image: {{ .Values.scylla.image }}
         {{- end }}
+        {{- if .Values.scylla.useNonRoot.enabled }}
+        securityContext:
+          capabilities:
+            add:
+            - SYS_NICE
+        {{- end }}
         ports:
           - containerPort: 8000
           - containerPort: 9042
@@ -59,7 +65,11 @@ spec:
           - name: scylladb-config
             mountPath: /etc/scylla
           - name: scylladb-data
+          {{- if .Values.scylla.useNonRoot.enabled }}
+            mountPath: /opt/scylladb/scylla/data
+          {{- else }}
             mountPath: /var/lib/scylla
+          {{- end }}
       volumes:
         - name: scylladb-config
           configMap:
