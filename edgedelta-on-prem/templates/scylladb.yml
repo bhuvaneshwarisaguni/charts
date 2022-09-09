@@ -48,7 +48,11 @@ spec:
         - --alternator-address=0.0.0.0
         - --alternator-port=8000
         - --alternator-write-isolation=always
+        {{- if .Values.scylla.useDeveloperMode }}
+        - --developer-mode=1
+        {{- else }}
         - --developer-mode=0
+        {{- end }}
         - --overprovisioned=1
         - --smp=$(CPU_COUNT)
         env:

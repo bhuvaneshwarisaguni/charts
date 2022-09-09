@@ -129,6 +129,7 @@ scylla:
   image: scylladb/scylla:4.6.3
   enabled: true
   useServiceAccount: true
+  useDeveloperMode: false
 
   useNonRoot:
     enabled: false
