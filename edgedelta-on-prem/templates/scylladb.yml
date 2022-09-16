@@ -1,4 +1,4 @@
-{{- if .Values.scylla.enabled }}
+{{- if .Values.database.scylladb.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,7 +20,7 @@ spec:
         k8s-app: scylladb
         {{- include "edgedelta.onprem.labels" . | nindent 8 }}
     spec:
-      {{- if .Values.scylla.useServiceAccount }}
+      {{- if .Values.database.scylladb.useServiceAccount }}
       serviceAccountName: {{ include "edgedelta.onprem.fullname" . | quote }}
       {{- end }}
       terminationGracePeriodSeconds: 10
@@ -30,12 +30,12 @@ spec:
       {{- end }}
       containers:
       - name: scylladb
-        {{- if .Values.scylla.useNonRoot.enabled }}
-        image: {{ .Values.scylla.useNonRoot.image }}
+        {{- if .Values.database.scylladb.useNonRoot.enabled }}
+        image: {{ .Values.database.scylladb.useNonRoot.image }}
         {{- else }}
-        image: {{ .Values.scylla.image }}
+        image: {{ .Values.database.scylladb.image }}
         {{- end }}
-        {{- if .Values.scylla.useNonRoot.enabled }}
+        {{- if .Values.database.scylladb.useNonRoot.enabled }}
         securityContext:
           capabilities:
             add:
@@ -48,7 +48,7 @@ spec:
         - --alternator-address=0.0.0.0
         - --alternator-port=8000
         - --alternator-write-isolation=always
-        {{- if .Values.scylla.useDeveloperMode }}
+        {{- if .Values.database.scylladb.useDeveloperMode }}
         - --developer-mode=1
         {{- else }}
         - --developer-mode=0
@@ -63,13 +63,13 @@ spec:
               divisor: "1"
               resource: limits.cpu
         resources:
-          {{- toYaml .Values.scylla.resources | nindent 12 }}
+          {{- toYaml .Values.database.scylladb.resources | nindent 12 }}
         imagePullPolicy: Always
         volumeMounts:
           - name: scylladb-config
             mountPath: /etc/scylla
           - name: scylladb-data
-          {{- if .Values.scylla.useNonRoot.enabled }}
+          {{- if .Values.database.scylladb.useNonRoot.enabled }}
             mountPath: /opt/scylladb/scylla/data
           {{- else }}
             mountPath: /var/lib/scylla
@@ -107,10 +107,10 @@ metadata:
     {{- include "edgedelta.onprem.labels" . | nindent 4 }}
 data:
   scylla.yaml: |
-    {{- if .Values.scylla.useNonRoot.enabled }}
-    {{- deepCopy (fromYaml .Values.scylla.config) | merge (fromYaml .Values.scylla.nonRootConfigExtras) | toYaml | nindent 4 }}
+    {{- if .Values.database.scylladb.useNonRoot.enabled }}
+    {{- deepCopy (fromYaml .Values.database.scylladb.config) | merge (fromYaml .Values.database.scylladb.nonRootConfigExtras) | toYaml | nindent 4 }}
     {{- else }}
-    {{- .Values.scylla.config | nindent 4 }}
+    {{- .Values.database.scylladb.config | nindent 4 }}
     {{- end }}
 ---
 apiVersion: v1
@@ -127,5 +127,5 @@ spec:
   accessModes:
   - ReadWriteOnce
   resources:
-    {{- toYaml .Values.scylla.storageResources | nindent 4 }}
+    {{- toYaml .Values.database.scylladb.storageResources | nindent 4 }}
 {{- end }}

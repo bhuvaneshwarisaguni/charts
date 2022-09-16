@@ -61,8 +61,8 @@ spec:
             }
 
             {{- if .Values.openFaas.isFullDeployment }}
-            accessKeyIdSecret={{ .Values.initializer.accessKeyIdName | default "ed-scylladb-access-key-id" | quote }}
-            secretKeySecret={{ .Values.initializer.secretKeyName | default "ed-scylladb-secret-key" | quote }}
+            accessKeyIdSecret={{ .Values.initializer.accessKeyIdName | default "ed-database-access-key-id" | quote }}
+            secretKeySecret={{ .Values.initializer.secretKeyName | default "ed-database-secret-key" | quote }}
 
             # Retry until desired secrets are created
             retry kubectl get secret $accessKeyIdSecret -n {{ .Release.Namespace }} && kubectl get secret $secretKeySecret -n {{ .Release.Namespace }}
@@ -123,9 +123,13 @@ data:
           {{- if .Values.openFaas.isFullDeployment }}
           ED_DATABASE_TABLE_NAME_PREFIX: "ed"
           ED_REMOTE_REPOSITORY_MODE: "full-on-prem"
-          ED_ON_PREM_DYNAMO_ACCESS_KEY_ID_FILE: "/var/openfaas/secrets/{{ .Values.initializer.accessKeyIdName | default "ed-scylladb-access-key-id" }}"
-          ED_ON_PREM_DYNAMO_SECRET_KEY_FILE: "/var/openfaas/secrets/{{ .Values.initializer.secretKeyName | default "ed-scylladb-secret-key" }}"
+          ED_ON_PREM_DYNAMO_ACCESS_KEY_ID_FILE: "/var/openfaas/secrets/{{ .Values.initializer.accessKeyIdName | default "ed-database-access-key-id" }}"
+          ED_ON_PREM_DYNAMO_SECRET_KEY_FILE: "/var/openfaas/secrets/{{ .Values.initializer.secretKeyName | default "ed-database-secret-key" }}"
+          {{- if .Values.database.scylladb.enabled }}
           ED_ON_PREM_DYNAMO_ENDPOINT: "http://scylladb-service.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:8000"
+          {{- else if .Values.database.dynamodb.enabled }}
+          ED_ON_PREM_DYNAMO_ENDPOINT: "http://dynamodb-service.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:8000"
+          {{- end }}
           {{- else }}
           ED_REMOTE_REPOSITORY_MODE: "hybrid-on-prem"
           ED_REHYDRATION_API_ENDPOINT: {{ .Values.rehydration.apiEndpoint | quote }}
@@ -139,8 +143,8 @@ data:
           GODEBUG: "madvdontneed=1"
         secrets:
         {{- if .Values.openFaas.isFullDeployment }}
-          - {{ .Values.initializer.accessKeyIdName | default "ed-scylladb-access-key-id" | quote }}
-          - {{ .Values.initializer.secretKeyName | default "ed-scylladb-secret-key" | quote }}
+          - {{ .Values.initializer.accessKeyIdName | default "ed-database-access-key-id" | quote }}
+          - {{ .Values.initializer.secretKeyName | default "ed-database-secret-key" | quote }}
         {{- else }}
           - {{ .Values.rehydration.tokenSecretName | default "ed-rehydration-token" | quote }}
         {{- end }}

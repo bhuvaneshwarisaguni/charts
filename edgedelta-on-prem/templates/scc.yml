@@ -8,11 +8,18 @@ metadata:
     helm.sh/hook-weight: "-9"
     helm.sh/hook-delete-policy: before-hook-creation
 priority: 999
+runAsUser:
+  type: MustRunAsRange
+  range: 1,10000000001
 fsGroup:
   type: MustRunAs
   ranges:
   - min: 1
     max: 10000000001
+seLinuxContext:
+  type: MustRunAs
+supplementalGroups:
+  type: RunAsAny
 volumes:
 - configMap
 - downwardAPI
@@ -33,13 +40,6 @@ defaultAddCapabilities: null
 readOnlyRootFilesystem: false
 requiredDropCapabilities:
 - MKNOD
-runAsUser:
-  type: MustRunAsRange
-  range: 1,10000000001
-seLinuxContext:
-  type: MustRunAs
-supplementalGroups:
-  type: RunAsAny
 groups:
 - system:cluster-admins
 users:

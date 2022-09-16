@@ -81,17 +81,21 @@ spec:
                 name: {{ .Values.initializer.samlCertName | default "saml-cert" | quote }}
           {{- end }}
           - name: BACKEND_ON_PREMISE_DYNAMO_ENDPOINT
+            {{- if .Values.database.scylladb.enabled }}
             value: http://scylladb-service.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:8000
+            {{- else if .Values.database.dynamodb.enabled }}
+            value: http://dynamodb-service.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:8000
+            {{- end }}
           - name: BACKEND_ON_PREMISE_DYNAMO_ACCESS_KEY_ID
             valueFrom:
               secretKeyRef:
-                key: {{ .Values.initializer.accessKeyIdName | default "ed-scylladb-access-key-id" | quote }}
-                name: {{ .Values.initializer.accessKeyIdName | default "ed-scylladb-access-key-id" | quote }}
+                key: {{ .Values.initializer.accessKeyIdName | default "ed-database-access-key-id" | quote }}
+                name: {{ .Values.initializer.accessKeyIdName | default "ed-database-access-key-id" | quote }}
           - name: BACKEND_ON_PREMISE_DYNAMO_SECRET_KEY
             valueFrom:
               secretKeyRef:
-                key: {{ .Values.initializer.secretKeyName | default "ed-scylladb-secret-key" | quote }}
-                name: {{ .Values.initializer.secretKeyName | default "ed-scylladb-secret-key" | quote }}
+                key: {{ .Values.initializer.secretKeyName | default "ed-database-secret-key" | quote }}
+                name: {{ .Values.initializer.secretKeyName | default "ed-database-secret-key" | quote }}
           {{- if .Values.openFaas.enabled }}
           - name: ED_OPENFAAS_GATEWAY
             value: "http://gateway-external.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:8080"
@@ -110,6 +114,8 @@ spec:
           {{- end }}
           {{- end }}
           {{- if .Values.influxdb.enabled }}
+          - name: ED_BACKEND_ON_PREMISE_INFLUX
+            value: "1"
           - name: BACKEND_ON_PREMISE_INFLUX_HOST
           {{- $port := .Values.influxdb.port | default 8086 }}
           {{- if .Values.influxdb.hostName }}

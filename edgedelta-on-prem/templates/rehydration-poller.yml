@@ -35,6 +35,14 @@ spec:
           - name: ED_REHYDRATION_POLL_INTERVAL
             value: {{ .Values.rehydration.pollerOptions.pollInterval | default "10s" | quote }}
           - name: ED_ORG_ID
+            {{- if .Values.rehydration.orgId }}
+            value: {{ .Values.rehydration.orgId | quote }}
+            {{- else }}
+            valueFrom:
+              secretKeyRef:
+                key: "ed-rehydration-org-id" # this is used when rehydration is triggered for an org created in on-prem-initializer(values are hardcoded in tools/on_prem_init/stages.go:52)
+                name: "ed-rehydration-token" 
+            {{- end }}
             value: {{ .Values.rehydration.orgId | quote }}
           - name: ED_API_ENDPOINT
             value: {{ .Values.rehydration.apiEndpoint | quote }}

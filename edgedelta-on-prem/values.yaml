@@ -107,8 +107,8 @@ initializer:
   enabled: true
   useServiceAccount: true
 
-  accessKeyIdName: "ed-scylladb-access-key-id"
-  secretKeyName: "ed-scylladb-secret-key"
+  accessKeyIdName: "ed-database-access-key-id"
+  secretKeyName: "ed-database-secret-key"
   configMapName: "ed-bootstrap-status"
 
   samlSubjectName: "ed-on-prem-org.com" # Certificate CN, SAN
@@ -124,64 +124,82 @@ initializer:
       cpu: 100m
       memory: 100Mi
 
-# Rest is the configuration for third party dependencies and Helm charts
-scylla:
-  image: scylladb/scylla:4.6.3
-  enabled: true
-  useServiceAccount: true
-  useDeveloperMode: false
-
-  useNonRoot:
+database:
+  dynamodb:
+    image: edgedelta/datastore:v0.1.1
     enabled: false
-    image: gcr.io/edgedelta/scylla-non-root:4.6.3 # or edgedelta/scylla-non-root:4.6.3
+    useServiceAccount: true
 
-  resources:
-    limits:
-      cpu: 2000m
-      memory: 6Gi
-    requests:
-      cpu: 1000m
-      memory: 3Gi
+    resources:
+      limits:
+        cpu: 400m
+        memory: 2Gi
+      requests:
+        cpu: 200m
+        memory: 1Gi
 
-  storageResources:
-    requests:
-      storage: 10Gi
+    storageResources:
+      requests:
+        storage: 10Gi
 
-  config: |
-    num_tokens: 256
-    commitlog_sync: periodic
-    commitlog_sync_period_in_ms: 10000
-    commitlog_segment_size_in_mb: 32
-    seed_provider:
-      - class_name: org.apache.cassandra.locator.SimpleSeedProvider
-        parameters:
-          - seeds: "127.0.0.1"
-    listen_address: localhost
-    native_transport_port: 9042
-    native_shard_aware_transport_port: 19042
-    read_request_timeout_in_ms: 5000
-    write_request_timeout_in_ms: 2000
-    cas_contention_timeout_in_ms: 1000
-    endpoint_snitch: SimpleSnitch
-    alternator_enforce_authorization: true
-    rpc_address: localhost
-    rpc_port: 9160
-    api_address: localhost
-    api_port: 10000
-    batch_size_warn_threshold_in_kb: 128
-    batch_size_fail_threshold_in_kb: 1024
-    partitioner: org.apache.cassandra.dht.Murmur3Partitioner
-    commitlog_total_space_in_mb: -1
-    murmur3_partitioner_ignore_msb_bits: 12
+  # Rest is the configuration for third party dependencies and Helm charts
+  scylladb:
+    image: scylladb/scylla:4.6.3
+    enabled: true
+    useServiceAccount: true
+    useDeveloperMode: false
 
-  nonRootConfigExtras: |
-    workdir: /opt/scylladb/scylla
-    data_file_directories:
-      - /opt/scylladb/scylla/data/scylladata
-    commitlog_directory: /opt/scylladb/scylla/commitlog
-    hints_directory: /opt/scylladb/scylla/hints
-    view_hints_directory: /opt/scylladb/scylla/view_hints
+    useNonRoot:
+      enabled: false
+      image: gcr.io/edgedelta/scylla-non-root:4.6.3 # or edgedelta/scylla-non-root:4.6.3
 
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 6Gi
+      requests:
+        cpu: 1000m
+        memory: 3Gi
+
+    storageResources:
+      requests:
+        storage: 10Gi
+  
+    config: |
+      num_tokens: 256
+      commitlog_sync: periodic
+      commitlog_sync_period_in_ms: 10000
+      commitlog_segment_size_in_mb: 32
+      seed_provider:
+        - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+          parameters:
+            - seeds: "127.0.0.1"
+      listen_address: localhost
+      native_transport_port: 9042
+      native_shard_aware_transport_port: 19042
+      read_request_timeout_in_ms: 5000
+      write_request_timeout_in_ms: 2000
+      cas_contention_timeout_in_ms: 1000
+      endpoint_snitch: SimpleSnitch
+      alternator_enforce_authorization: true
+      rpc_address: localhost
+      rpc_port: 9160
+      api_address: localhost
+      api_port: 10000
+      batch_size_warn_threshold_in_kb: 128
+      batch_size_fail_threshold_in_kb: 1024
+      partitioner: org.apache.cassandra.dht.Murmur3Partitioner
+      commitlog_total_space_in_mb: -1
+      murmur3_partitioner_ignore_msb_bits: 12
+  
+    nonRootConfigExtras: |
+      workdir: /opt/scylladb/scylla
+      data_file_directories:
+        - /opt/scylladb/scylla/data/scylladata
+      commitlog_directory: /opt/scylladb/scylla/commitlog
+      hints_directory: /opt/scylladb/scylla/hints
+      view_hints_directory: /opt/scylladb/scylla/view_hints
+  
 influxdb:
   enabled: false
   useServiceAccount: true
