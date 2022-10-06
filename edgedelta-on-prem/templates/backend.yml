@@ -79,6 +79,16 @@ spec:
               secretKeyRef:
                 key: {{ .Values.initializer.samlCertName | default "saml-cert" | quote }}
                 name: {{ .Values.initializer.samlCertName | default "saml-cert" | quote }}
+          {{- if .Values.api.login.saml.alwaysUseSaml }}
+          - name: WITHOUT_OKTA
+            value: "1"
+          {{- end }}
+          {{- end }}
+          {{- if .Values.api.login.disableAuthentication }}
+          - name: ED_DISABLE_AUTHENTICATION
+            value: "1"
+          - name: WITHOUT_OKTA
+            value: "1"
           {{- end }}
           - name: BACKEND_ON_PREMISE_DYNAMO_ENDPOINT
             {{- if .Values.database.scylladb.enabled }}
@@ -121,13 +131,18 @@ spec:
           {{- if .Values.influxdb.hostName }}
             value: "https://{{ .Values.influxdb.hostName }}"
           {{- else }}
-            value: "http://influxdb.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:{{ $port }}"
+            value: "http://influxdb-service.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:{{ $port }}"
           {{- end }}
           - name: INFLUX_TOKEN
             valueFrom:
               secretKeyRef:
                 name: {{ include "edgedelta.onprem.fullname" . }}-auth
-                key: "DOCKER_INFLUXDB_INIT_ADMIN_TOKEN"
+                key: "INFLUXDB_ADMIN_USER_TOKEN"
+          - name: INFLUX_ORG_ID
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "edgedelta.onprem.fullname" . }}-auth
+                key: "INFLUX_ORG_ID"
           {{- end }}
         command:
           - /edgedelta/admin

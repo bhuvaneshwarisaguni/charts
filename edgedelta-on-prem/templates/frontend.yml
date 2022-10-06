@@ -45,6 +45,18 @@ spec:
             value: {{ .Values.okta.redirectUrl | quote }}
           - name: ED_FRONTEND_PORT
             value: {{ .Values.app.port | default 5555 | quote }}
+          {{- if .Values.api.login.saml.alwaysUseSaml }}
+          - name: ALWAYS_USE_SAML
+            value: "1"
+          {{- end }}
+          {{- if .Values.api.login.disableAuthentication }}
+          - name: ED_DISABLE_AUTHENTICATION
+            value: "1"
+          {{- end }}
+          {{- if .Values.influxdb.enabled }}
+          - name: ED_ON_PREM_INFLUX_ENABLED
+            value: "1"
+          {{- end }}
         command:
           - /configure-site-run-nginx.sh
         resources:

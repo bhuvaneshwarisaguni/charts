@@ -60,9 +60,25 @@ spec:
           - name: STORE_PORT
             value: "8085"
           - name: GOGC
+          {{- if .Values.rehydration.goGC }}
+            value: "{{ .Values.rehydration.goGC }}"
+          {{- else }}
             value: "20"
+          {{- end }}
           - name: GODEBUG
             value: "madvdontneed=1"
+          {{- if .Values.rehydration.concurrency }}
+          - name: ED_REHYDRATION_CONCURRENCY_LIMIT
+            value: "{{ .Values.rehydration.concurrency }}"
+          {{- end }}
+          {{- if .Values.rehydration.decompressBufferSize }}
+          - name: ED_DECOMPRESS_BUFFER_SIZE
+            value: {{ .Values.rehydration.decompressBufferSize | quote }}
+          {{- end }}
+          {{- if .Values.rehydration.scanBufferSize }}
+          - name: ED_SCAN_BUFFER_SIZE
+            value: {{ .Values.rehydration.scanBufferSize | quote }}
+          {{- end }}
         resources:
           limits:
             cpu: {{ .Values.rehydration.handlerOptions.cpuLimit | default "2000m" }}

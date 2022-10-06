@@ -52,9 +52,11 @@ api:
       memory: 256Mi
 
   login:
+    disableAuthentication: false
     saml:
       enabled: false
       redirectUrl: ""
+      alwaysUseSaml: false
 
 app:
   enabled: true
@@ -80,6 +82,15 @@ rehydration:
   tokenSecretName: "ed-rehydration-token"
   apiEndpoint: "" # It should be empty for "full" deployment mode. Default is https://api.edgedelta.com
   memoryLimit: 16 # In terms of GB
+  goGC: 20 # It designates the aggressiveness of the garbage collection. Less is more aggressive. Default it 20.
+  concurrency: 4 # It affects number of files that would be downloaded concurrently, default is 4
+  # The size of the buffer that downloaded files be decompressed upon, default is 1G.
+  decompressBufferSize: 1G
+  # The size of the buffer that decompressed files will be decoded upon, default is 1M.
+  # If raw per-log sizes are above 1M characters, users should increase this size.
+  scanBufferSize: 1M
+  # These should be decreased if memory limit is constant and concurrency is increased since
+  # concurrency * (decompressBufferSize + scanBufferSize) would be preallocated at the startup.
 
   pollerOptions: # Only valid if deployment mode is "only_rehydration"
     enabled: false
@@ -115,6 +126,11 @@ initializer:
   samlOrgName: "ed-on-prem-org" # Certificate Organization
   samlKeyName: "saml-key"
   samlCertName: "saml-cert"
+  samlMetadataUrl: ""
+  samlDomain: ""
+  samlSkipSSLVerify: false # default is false
+
+  provisionOrgID: "" # if set an organization will be provisioned with this id
 
   resources:
     limits:
@@ -164,7 +180,7 @@ database:
     storageResources:
       requests:
         storage: 10Gi
-  
+
     config: |
       num_tokens: 256
       commitlog_sync: periodic
@@ -191,7 +207,7 @@ database:
       partitioner: org.apache.cassandra.dht.Murmur3Partitioner
       commitlog_total_space_in_mb: -1
       murmur3_partitioner_ignore_msb_bits: 12
-  
+
     nonRootConfigExtras: |
       workdir: /opt/scylladb/scylla
       data_file_directories:
@@ -199,14 +215,14 @@ database:
       commitlog_directory: /opt/scylladb/scylla/commitlog
       hints_directory: /opt/scylladb/scylla/hints
       view_hints_directory: /opt/scylladb/scylla/view_hints
-  
+
 influxdb:
   enabled: false
   useServiceAccount: true
 
   image:
-    repository: influxdb
-    tag: 2.2.0-alpine
+    repository: bitnami/influxdb
+    tag: 2.4.0
 
   port: 8086
   # Required if agents will use influx outside of cluster.

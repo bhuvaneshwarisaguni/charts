@@ -139,8 +139,21 @@ data:
           ED_MAX_INFLIGHT: "1"
           ED_REHYDRATION_BLOCK_TIMEOUT: 5m
           STORE_PORT: "8085"
+          {{- if .Values.rehydration.goGC }}
+          GOGC: "{{ .Values.rehydration.goGC }}"
+          {{- else }}
           GOGC: "20"
+          {{- end }}
           GODEBUG: "madvdontneed=1"
+          {{- if .Values.rehydration.concurrency }}
+          ED_REHYDRATION_CONCURRENCY_LIMIT: "{{ .Values.rehydration.concurrency }}"
+          {{- end }}
+          {{- if .Values.rehydration.decompressBufferSize }}
+          ED_DECOMPRESS_BUFFER_SIZE: {{ .Values.rehydration.decompressBufferSize | quote }}
+          {{- end }}
+          {{- if .Values.rehydration.scanBufferSize }}
+          ED_SCAN_BUFFER_SIZE: {{ .Values.rehydration.scanBufferSize | quote }}
+          {{- end }}
         secrets:
         {{- if .Values.openFaas.isFullDeployment }}
           - {{ .Values.initializer.accessKeyIdName | default "ed-database-access-key-id" | quote }}
