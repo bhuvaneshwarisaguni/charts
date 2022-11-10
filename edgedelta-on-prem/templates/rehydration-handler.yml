@@ -51,8 +51,6 @@ spec:
               secretKeyRef:
                 key: {{ .Values.rehydration.tokenSecretName | default "ed-rehydration-token" | quote }}
                 name: {{ .Values.rehydration.tokenSecretName | default "ed-rehydration-token" | quote }}
-          - name: ED_REHYDRATION_MEMORY_THRESHOLD
-            value: "{{ div (mul (.Values.rehydration.memoryLimit | default 16) 9) 10 }}G" # This value should be less than memory limit of the pod, ideally 90% of the limit
           - name: ED_MAX_INFLIGHT
             value: "1"
           - name: ED_REHYDRATION_BLOCK_TIMEOUT
@@ -65,6 +63,8 @@ spec:
           {{- else }}
             value: "20"
           {{- end }}
+          - name: GOMEMLIMIT
+            value: "{{ div (mul (.Values.rehydration.memoryLimit | default 16) 9) 10 }}GiB" # This value should be less than memory limit of the pod, ideally 90% of the limit
           - name: GODEBUG
             value: "madvdontneed=1"
           {{- if .Values.rehydration.concurrency }}

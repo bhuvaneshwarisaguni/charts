@@ -135,7 +135,6 @@ data:
           ED_REHYDRATION_API_ENDPOINT: {{ .Values.rehydration.apiEndpoint | quote }}
           ED_REMOTE_TOKEN_FILE: "/var/openfaas/secrets/{{ .Values.rehydration.tokenSecretName | default "ed-rehydration-token" }}"
           {{- end }}
-          ED_REHYDRATION_MEMORY_THRESHOLD: "{{ div (mul .Values.rehydration.memoryLimit 9) 10 }}G" # This value should be less than memory limit of the pod, ideally 90% of the limit
           ED_MAX_INFLIGHT: "1"
           ED_REHYDRATION_BLOCK_TIMEOUT: 5m
           STORE_PORT: "8085"
@@ -144,6 +143,7 @@ data:
           {{- else }}
           GOGC: "20"
           {{- end }}
+          GOMEMLIMIT: "{{ div (mul .Values.rehydration.memoryLimit 9) 10 }}G" # This value should be less than memory limit of the pod, ideally 90% of the limit
           GODEBUG: "madvdontneed=1"
           {{- if .Values.rehydration.concurrency }}
           ED_REHYDRATION_CONCURRENCY_LIMIT: "{{ .Values.rehydration.concurrency }}"
