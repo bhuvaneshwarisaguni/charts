@@ -1,0 +1,69 @@
+{{- if .Values.configtest.pollerOptions.enabled  }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: configtest-poller
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    k8s-app: configtest-poller
+    {{- include "edgedelta.onprem.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: configtest-poller
+  template:
+    metadata:
+      labels:
+        k8s-app: configtest-poller
+        {{- include "edgedelta.onprem.labels" . | nindent 8 }}
+    spec:
+      {{- if .Values.configtest.pollerOptions.useServiceAccount }}
+      serviceAccountName: {{ include "edgedelta.onprem.fullname" . | quote }}
+      {{- end }}
+      terminationGracePeriodSeconds: 10
+      {{- if .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: configtest-poller
+        image: {{ .Values.repository }}/functionpoller:{{ .Chart.AppVersion }}
+        command:
+          - /edgedelta/functionpoller
+        env:
+          - name: ED_CONFIG_TEST_POLL_INTERVAL
+            value: {{ .Values.configtest.pollerOptions.pollInterval | default "10s" | quote }}
+          - name: ED_ORG_ID
+            {{- if .Values.configtest.orgId }}
+            value: {{ .Values.configtest.orgId | quote }}
+            {{- else }}
+            valueFrom:
+              secretKeyRef:
+                key: "ed-function-org-id" # this is used when function is triggered for an org created in on-prem-initializer(values are hardcoded in tools/on_prem_init/stages.go:52)
+                name: "ed-api-token" 
+            {{- end }}
+          - name: ED_API_ENDPOINT
+            value: {{ .Values.configtest.apiEndpoint | quote }} 
+          {{- if .Values.openFaas.enabled }}
+          - name: ED_OPENFAAS_GATEWAY
+            value: "http://gateway-external.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:8080"
+          {{- else }}
+          - name: ED_CONFIG_TEST_DIRECT_ENDPOINT
+            value: "http://config-test-handler-service.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:{{ .Values.configtest.handlerOptions.port | default 8080 }}"
+          - name: ED_DISABLE_OPENFAAS
+            value: "1"
+          {{- end }}
+          {{- if .Values.configtest.agentTagsFilter }}
+          - name: ED_AGENT_TAGS_FILTER
+            value: {{ .Values.configtest.agentTagsFilter | quote }}
+          {{- end }}
+          - name: ED_REMOTE_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: {{ .Values.configtest.tokenSecretName | default "ed-api-token" | quote }}
+                name: {{ .Values.configtest.tokenSecretName | default "ed-api-token" | quote }}
+        resources:
+          {{- toYaml .Values.configtest.pollerOptions.resources | nindent 10 }}
+        imagePullPolicy: Always
+{{- end }}

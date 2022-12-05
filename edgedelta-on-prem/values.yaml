@@ -4,13 +4,14 @@ repository: "gcr.io/edgedelta"
 storageClassName: ""
 usingOpenShift: false # Should be true for OpenShift for smooth procedure
 
-# This should be enabled and edited for secure clusters such as OpenShift
+# This should be enabled and edited for secure clusters such as OpenShift/EKS
 # podSecurityContext:
 #   runAsUser: 1000
 
 openFaas: # Valid for all deployment types
   enabled: true
   minRehydrationCount: 1
+  minConfigTestCount: 1
   isFullDeployment: true
   proLicense: ""
 
@@ -74,29 +75,92 @@ app:
       cpu: 100m
       memory: 20Mi
 
+batchJobs:
+  agentDownDetector:
+    enabled: true
+    cronString: "*/5 * * * *"
+    metricPort: 8181
+    window: "5m"
+    offset: "1m"
+    timeout: "10m"
+  configValidation:
+    enabled: true
+    cronString: "0 16 * * *"
+    timeout: "1h"
+  correlatedSignal:
+    enabled: true
+    cronString: "*/5 * * * *"
+    window: "15m"
+    offset: "1m"
+    timeout: "5m"
+  crashLoopDetector:
+    enabled: true
+    cronString: "*/5 * * * *"
+    metricPort: 8181
+    window: "5m"
+    offset: "1m"
+    timeout: "10m"
+  metricAlert:
+    enabled: true
+    cronString: "*/5 * * * *"
+    metricPort: 8181
+    window: "5m"
+    offset: "1m"
+    timeout: "5m"
+  notifyFindings:
+    enabled: true
+    cronString: "*/5 * * * *"
+    window: "5m"
+    offset: "2m"
+    timeout: "3m"
+  patternCheck:
+    enabled: true
+    # At every 10th minute from 2 through 59: xx:02,xx:12,xx:22 etc..
+    cronString: "2-59/10 * * * *"
+    window: "1h"
+    offset: "1m"
+    timeout: "10m"
+    concurrency: 20
+  patternSkyline:
+    enabled: true
+    # At every 10th minute from 2 through 59: xx:02,xx:12,xx:22 etc..
+    cronString: "1-59/5 * * * *"
+    window: "15m"
+    offset: "1m"
+    timeout: "5m"
+  sourceVersionChange:
+    enabled: true
+    cronString: "*/5 * * * *"
+    metricPort: 8181
+    window: "5m"
+    offset: "1m"
+    timeout: "5m"
+  streamerFailureDetector:
+    enabled: true
+    cronString: "*/10 * * * *"
+    window: "10m"
+    offset: "1m"
+    timeout: "10m"
+
 rehydration:
   orgId: ""
   mode: "prod"
   pushBatchSize: "10000"
   token: ""
-  tokenSecretName: "ed-rehydration-token"
+  tokenSecretName: "ed-api-token"
   apiEndpoint: "" # It should be empty for "full" deployment mode. Default is https://api.edgedelta.com
   memoryLimit: 16 # In terms of GB
   goGC: 20 # It designates the aggressiveness of the garbage collection. Less is more aggressive. Default it 20.
   concurrency: 4 # It affects number of files that would be downloaded concurrently, default is 4
-  # The size of the buffer that downloaded files be decompressed upon, default is 1G.
-  decompressBufferSize: 1G
-  # The size of the buffer that decompressed files will be decoded upon, default is 1M.
-  # If raw per-log sizes are above 1M characters, users should increase this size.
-  scanBufferSize: 1M
-  # These should be decreased if memory limit is constant and concurrency is increased since
-  # concurrency * (decompressBufferSize + scanBufferSize) would be preallocated at the startup.
+  agentTagsFilter: "" # Comma separated list of agent tags to perform rehydration
+
+  cpuRequest: 1000m
+  cpuLimit: 2000m
 
   pollerOptions: # Only valid if deployment mode is "only_rehydration"
     enabled: false
     useServiceAccount: true
     pollInterval: 10s
-
     resources:
       limits:
         cpu: 200m
@@ -105,14 +169,42 @@ rehydration:
         cpu: 100m
         memory: 100Mi
 
-  handlerOptions: # Only valid if deployment mode is "only_rehydration"
+  handlerOptions: # only valid if deployment mode is "only_rehydration"
     enabled: false
     useServiceAccount: true
     port: 8080
     replicaCount: 1
-
     cpuRequest: 1000m
     cpuLimit: 2000m
+
+configtest:
+  orgId: ""
+  mode: "prod"
+  token: ""
+  tokenSecretName: "ed-api-token"
+  apiEndpoint: "" # It should be empty for "full" deployment mode. Default is https://api.edgedelta.com
+  agentTagsFilter: "" # Comma separated list of agent tags to perform configtest
+
+  pollerOptions:
+    enabled: false
+    useServiceAccount: true
+    pollInterval: 5s
+    resources:
+      limits:
+        cpu: 200m
+        memory: 200Mi
+      requests:
+        cpu: 100m
+        memory: 100Mi
+
+  handlerOptions:
+    enabled: false
+    useServiceAccount: true
+    port: 8080
+    replicaCount: 1
+    memoryLimit: 1 # In terms of GB
+    cpuRequest: 100m
+    cpuLimit: 200m
 
 initializer:
   enabled: true
@@ -240,19 +332,53 @@ influxdb:
     storageResources:
       requests:
         storage: 10Gi
-    mountPath: /var/lib/influxdb2
+    mountPath: /bitnami/influxdb
 
   adminUser:
     organization: "influxdata"
     bucket: "default"
     username: "admin"
 
+elasticsearch:
+  enabled: false
+  useServiceAccount: true
+
+  # Connect to already existing elastic instance
+  connection:
+    cloud_id: ""   # connection can be established using cloud_id or addresses
+    addresses: "" # comma separated list
+
+    token: ""    # authentication is done with token or username-password pair
+    username: ""
+    password: ""
+
+    region: ""
+
+  # when image is enabled, a password can be optionally provided in connection section to override default value ("elastic-password")
+  # username will be automatically set to "elastic"
+  # and the instance address will be http://elasticsearch-service.edgedelta-backend.svc.cluster.local:9200
+
+  image:
+    enabled: false # when enabled, a single node cluster elasticsearch with the provided resources in this section will be deployed.
+    repository: elasticsearch
+    tag: 8.5.0
+
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 6Gi
+      requests:
+        cpu: 1000m
+        memory: 3Gi
+
+    storage: 16Gi
+
 openfaas:
   # securityContext: true # This should be enabled and edited for secure clusters such as OpenShift
   functionNamespace: "openfaas-fn" # It should be renamed as helm namespace
   serviceType: "NodePort"
-  basic_auth: true
-  generateBasicAuth: true
+  basic_auth: false
+  generateBasicAuth: false
   openfaasPro: false # Set to true when license is not empty
   ceScaling: false
   proScaler:

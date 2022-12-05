@@ -1,6 +1,6 @@
 {{- if .Values.database.scylladb.enabled }}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: scylladb
   namespace: {{ .Release.Namespace | quote }}
@@ -9,11 +9,10 @@ metadata:
     {{- include "edgedelta.onprem.labels" . | nindent 4 }}
 spec:
   replicas: 1
-  strategy:
-    type: Recreate
   selector:
     matchLabels:
       k8s-app: scylladb
+  serviceName: scylladb-service
   template:
     metadata:
       labels:
@@ -78,9 +77,17 @@ spec:
         - name: scylladb-config
           configMap:
             name: scylladb-config
-        - name: scylladb-data
-          persistentVolumeClaim:
-            claimName: scylladb-data
+  volumeClaimTemplates:
+    - metadata:
+        name: scylladb-data
+      spec:
+        {{- if .Values.storageClassName }}
+        storageClassName: {{ .Values.storageClassName }}
+        {{- end }}
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          {{- toYaml .Values.database.scylladb.storageResources | nindent 10 }}
 ---
 apiVersion: v1
 kind: Service
@@ -112,20 +119,4 @@ data:
     {{- else }}
     {{- .Values.database.scylladb.config | nindent 4 }}
     {{- end }}
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: scylladb-data
-  namespace: {{ .Release.Namespace | quote }}
-  labels:
-    {{- include "edgedelta.onprem.labels" . | nindent 4 }}
-spec:
-  {{- if .Values.storageClassName }}
-  storageClassName: {{ .Values.storageClassName }}
-  {{- end }}
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    {{- toYaml .Values.database.scylladb.storageResources | nindent 4 }}
 {{- end }}

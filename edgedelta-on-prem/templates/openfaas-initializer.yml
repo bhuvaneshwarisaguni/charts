@@ -39,7 +39,7 @@ spec:
       containers:
       - name: openfaas-initializer
         # This image should be manually built and pushed (both in gcr and docker) with given version whenever a change occurs in the image
-        image: {{ .Values.repository }}/faas-init:2022-02-18-10-30-00
+        image: {{ .Values.repository }}/faas-init:2022-12-05-19-07-01
         command:
           - /bin/bash
           - -c
@@ -69,8 +69,8 @@ spec:
 
             {{- if ne .Values.openfaas.functionNamespace .Release.Namespace }}
             # Copy secret from {{ .Release.Namespace }} to {{ .Values.openfaas.functionNamespace }}
-            kubectl get secret $accessKeyIdSecret -n {{ .Release.Namespace }} -o yaml | sed 's/namespace: .*/namespace: {{ .Values.openfaas.functionNamespace }}/' | kubectl apply -f -
-            kubectl get secret $secretKeySecret -n {{ .Release.Namespace }} -o yaml | sed 's/namespace: .*/namespace: {{ .Values.openfaas.functionNamespace }}/' | kubectl apply -f -
+            kubectl get secret $accessKeyIdSecret -n {{ .Release.Namespace }} -ojson | jq 'del(.metadata.resourceVersion,.metadata.uid) | .metadata.creationTimestamp=null | .metadata.namespace="{{ .Values.openfaas.functionNamespace }}"' | kubectl apply -f -
+            kubectl get secret $secretKeySecret -n {{ .Release.Namespace }} -ojson | jq 'del(.metadata.resourceVersion,.metadata.uid) | .metadata.creationTimestamp=null | .metadata.namespace="{{ .Values.openfaas.functionNamespace }}"' | kubectl apply -f -
             {{- end }}
             {{- end }}
 
@@ -110,10 +110,10 @@ data:
         skip_build: true
         image: {{ .Values.repository }}/function:{{ .Chart.AppVersion }}
         limits:
-          cpu: 2000m
+          cpu: {{ .Values.rehydration.cpuLimit }}
           memory: {{ .Values.rehydration.memoryLimit }}Gi
         requests:
-          cpu: 1000m
+          cpu: {{ .Values.rehydration.cpuRequest }}
           memory: {{ .Values.rehydration.memoryLimit }}Gi
         environment:
           ED_MODE: {{ .Values.rehydration.mode | default "prod" | quote }}
@@ -132,8 +132,8 @@ data:
           {{- end }}
           {{- else }}
           ED_REMOTE_REPOSITORY_MODE: "hybrid-on-prem"
-          ED_REHYDRATION_API_ENDPOINT: {{ .Values.rehydration.apiEndpoint | quote }}
-          ED_REMOTE_TOKEN_FILE: "/var/openfaas/secrets/{{ .Values.rehydration.tokenSecretName | default "ed-rehydration-token" }}"
+          ED_API_ENDPOINT: {{ .Values.rehydration.apiEndpoint | quote }}
+          ED_REMOTE_TOKEN_FILE: "/var/openfaas/secrets/{{ .Values.rehydration.tokenSecretName | default "ed-api-token" }}"
           {{- end }}
           ED_MAX_INFLIGHT: "1"
           ED_REHYDRATION_BLOCK_TIMEOUT: 5m
@@ -148,18 +148,12 @@ data:
           {{- if .Values.rehydration.concurrency }}
           ED_REHYDRATION_CONCURRENCY_LIMIT: "{{ .Values.rehydration.concurrency }}"
           {{- end }}
-          {{- if .Values.rehydration.decompressBufferSize }}
-          ED_DECOMPRESS_BUFFER_SIZE: {{ .Values.rehydration.decompressBufferSize | quote }}
-          {{- end }}
-          {{- if .Values.rehydration.scanBufferSize }}
-          ED_SCAN_BUFFER_SIZE: {{ .Values.rehydration.scanBufferSize | quote }}
-          {{- end }}
         secrets:
         {{- if .Values.openFaas.isFullDeployment }}
           - {{ .Values.initializer.accessKeyIdName | default "ed-database-access-key-id" | quote }}
           - {{ .Values.initializer.secretKeyName | default "ed-database-secret-key" | quote }}
         {{- else }}
-          - {{ .Values.rehydration.tokenSecretName | default "ed-rehydration-token" | quote }}
+          - {{ .Values.rehydration.tokenSecretName | default "ed-api-token" | quote }}
         {{- end }}
         labels:
           com.openfaas.scale.min: {{ .Values.openFaas.minRehydrationCount }}
@@ -167,6 +161,53 @@ data:
           com.openfaas.scale.factor: 50
           com.openfaas.scale.zero: true
           openfaas-fn: rehydrate
+        annotations:
+          com.openfaas.health.http.path: "/healthz"
+          com.openfaas.health.http.initialDelay: "5s"
+      configtest:
+        skip_build: true
+        image: {{ .Values.repository }}/function:{{ .Chart.AppVersion }}
+        limits:
+          cpu: 200m
+          memory: {{ .Values.configtest.memoryLimit }}Gi
+        requests:
+          cpu: 100m
+          memory: {{ .Values.configtest.memoryLimit }}Gi
+        environment:
+          ED_MODE: {{ .Values.configtest.mode | default "prod" | quote }}
+          ED_HANDLER_NAME: "configtest"
+          ED_REMOTE_REPOSITORY: "1"
+          {{- if .Values.openFaas.isFullDeployment }}
+          ED_DATABASE_TABLE_NAME_PREFIX: "ed"
+          ED_REMOTE_REPOSITORY_MODE: "full-on-prem"
+          ED_ON_PREM_DYNAMO_ACCESS_KEY_ID_FILE: "/var/openfaas/secrets/{{ .Values.initializer.accessKeyIdName | default "ed-database-access-key-id" }}"
+          ED_ON_PREM_DYNAMO_SECRET_KEY_FILE: "/var/openfaas/secrets/{{ .Values.initializer.secretKeyName | default "ed-database-secret-key" }}"
+          {{- if .Values.database.scylladb.enabled }}
+          ED_ON_PREM_DYNAMO_ENDPOINT: "http://scylladb-service.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:8000"
+          {{- else if .Values.database.dynamodb.enabled }}
+          ED_ON_PREM_DYNAMO_ENDPOINT: "http://dynamodb-service.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:8000"
+          {{- end }}
+          {{- else }}
+          ED_REMOTE_REPOSITORY_MODE: "hybrid-on-prem"
+          ED_API_ENDPOINT: {{ .Values.configtest.apiEndpoint | quote }}
+          ED_REMOTE_TOKEN_FILE: "/var/openfaas/secrets/{{ .Values.configtest.tokenSecretName | default "ed-api-token" }}"
+          {{- end }}
+          ED_MAX_INFLIGHT: "1"
+          STORE_PORT: "8085"
+          GODEBUG: "madvdontneed=1"
+        secrets:
+        {{- if .Values.openFaas.isFullDeployment }}
+          - {{ .Values.initializer.accessKeyIdName | default "ed-database-access-key-id" | quote }}
+          - {{ .Values.initializer.secretKeyName | default "ed-database-secret-key" | quote }}
+        {{- else }}
+          - {{ .Values.configtest.tokenSecretName | default "ed-api-token" | quote }}
+        {{- end }}
+        labels:
+          com.openfaas.scale.min: {{ .Values.openFaas.minConfigTestCount }}
+          com.openfaas.scale.max: {{ add .Values.openFaas.minConfigTestCount (div .Values.openFaas.minConfigTestCount 2) }}
+          com.openfaas.scale.factor: 50
+          com.openfaas.scale.zero: true
+          openfaas-fn: configtest
         annotations:
           com.openfaas.health.http.path: "/healthz"
           com.openfaas.health.http.initialDelay: "5s"

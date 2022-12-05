@@ -40,7 +40,7 @@ spec:
             value: {{ .Values.rehydration.pushBatchSize | default "10000" | quote }}
           - name: ED_HANDLER_NAME
             value: "rehydrate"
-          - name: ED_REHYDRATION_API_ENDPOINT
+          - name: ED_API_ENDPOINT
             value: {{ .Values.rehydration.apiEndpoint | quote }}
           - name: ED_REMOTE_REPOSITORY
             value: "1"
@@ -49,8 +49,8 @@ spec:
           - name: ED_REMOTE_TOKEN
             valueFrom:
               secretKeyRef:
-                key: {{ .Values.rehydration.tokenSecretName | default "ed-rehydration-token" | quote }}
-                name: {{ .Values.rehydration.tokenSecretName | default "ed-rehydration-token" | quote }}
+                key: {{ .Values.rehydration.tokenSecretName | default "ed-api-token" | quote }}
+                name: {{ .Values.rehydration.tokenSecretName | default "ed-api-token" | quote }}
           - name: ED_MAX_INFLIGHT
             value: "1"
           - name: ED_REHYDRATION_BLOCK_TIMEOUT
@@ -71,20 +71,12 @@ spec:
           - name: ED_REHYDRATION_CONCURRENCY_LIMIT
             value: "{{ .Values.rehydration.concurrency }}"
           {{- end }}
-          {{- if .Values.rehydration.decompressBufferSize }}
-          - name: ED_DECOMPRESS_BUFFER_SIZE
-            value: {{ .Values.rehydration.decompressBufferSize | quote }}
-          {{- end }}
-          {{- if .Values.rehydration.scanBufferSize }}
-          - name: ED_SCAN_BUFFER_SIZE
-            value: {{ .Values.rehydration.scanBufferSize | quote }}
-          {{- end }}
         resources:
           limits:
-            cpu: {{ .Values.rehydration.handlerOptions.cpuLimit | default "2000m" }}
+            cpu: {{ .Values.rehydration.cpuLimit | default "2000m" }}
             memory: {{ .Values.rehydration.memoryLimit | default 16 }}Gi
           requests:
-            cpu: {{ .Values.rehydration.handlerOptions.cpuRequest | default "1000m" }}
+            cpu: {{ .Values.rehydration.cpuRequest | default "1000m" }}
             memory: {{ .Values.rehydration.memoryLimit | default 16 }}Gi
         imagePullPolicy: Always
 ---

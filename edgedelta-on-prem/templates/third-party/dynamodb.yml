@@ -1,6 +1,6 @@
 {{- if .Values.database.dynamodb.enabled }}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: dynamodb
   namespace: {{ .Release.Namespace | quote }}
@@ -9,11 +9,10 @@ metadata:
     {{- include "edgedelta.onprem.labels" . | nindent 4 }}
 spec:
   replicas: 1
-  strategy:
-    type: Recreate
   selector:
     matchLabels:
       k8s-app: dynamodb
+  serviceName: dynamodb-service
   template:
     metadata:
       labels:
@@ -47,10 +46,17 @@ spec:
         volumeMounts:
           - name: dynamodb-data
             mountPath: /home/dynamodblocal/data
-      volumes:
-        - name: dynamodb-data
-          persistentVolumeClaim:
-            claimName: dynamodb-data
+  volumeClaimTemplates:
+    - metadata:
+        name: dynamodb-data
+      spec:
+        {{- if .Values.storageClassName }}
+        storageClassName: {{ .Values.storageClassName }}
+        {{- end }}
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          {{- toYaml .Values.database.dynamodb.storageResources | nindent 10 }}
 ---
 apiVersion: v1
 kind: Service
@@ -65,20 +71,4 @@ spec:
   selector:
     k8s-app: dynamodb
     {{- include "edgedelta.onprem.labels" . | nindent 4 }}
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: dynamodb-data
-  namespace: {{ .Release.Namespace | quote }}
-  labels:
-    {{- include "edgedelta.onprem.labels" . | nindent 4 }}
-spec:
-  {{- if .Values.storageClassName }}
-  storageClassName: {{ .Values.storageClassName }}
-  {{- end }}
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    {{- toYaml .Values.database.dynamodb.storageResources | nindent 4 }}
 {{- end }}

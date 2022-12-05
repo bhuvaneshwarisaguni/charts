@@ -1,0 +1,77 @@
+{{- if and .Values.elasticsearch.enabled .Values.elasticsearch.image.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    k8s-app: elasticsearch
+    {{- include "edgedelta.onprem.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: elasticsearch
+  serviceName: elasticsearch-service
+  template:
+    metadata:
+      labels:
+        k8s-app: elasticsearch
+        {{- include "edgedelta.onprem.labels" . | nindent 8 }}
+    spec:
+      {{- if .Values.elasticsearch.useServiceAccount }}
+      serviceAccountName: {{ include "edgedelta.onprem.fullname" . | quote }}
+      {{- end }}
+      securityContext:
+      {{- if .Values.podSecurityContext }}
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- else }}
+        runAsUser: 1000
+        fsGroup: 1000
+      {{- end }}
+      containers:
+        - name: elasticsearch
+          image: "{{ .Values.elasticsearch.image.repository }}:{{ .Values.elasticsearch.image.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - name: elastic-svc
+              containerPort: 9200
+              protocol: TCP
+          env:
+            - name: discovery.type
+              value: single-node
+            - name: ELASTIC_PASSWORD
+              value: {{ .Values.elasticsearch.connection.password | default "elastic-password" | quote }}
+          volumeMounts:
+            - name: elasticsearch-data
+              mountPath: /usr/share/elasticsearch/data
+          resources:
+            {{ .Values.elasticsearch.image.resources | toYaml | nindent 12 | trim }}
+  volumeClaimTemplates:
+    - metadata:
+        name: "elasticsearch-data"
+      spec:
+        {{- if .Values.storageClassName }}
+        storageClassName: {{ .Values.storageClassName }}
+        {{- end }}
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: {{ .Values.elasticsearch.image.storage | default "16Gi" }}
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: elasticsearch-service
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  ports:
+    - name: http
+      port: 9200
+      protocol: TCP
+      targetPort: elastic-svc
+  selector:
+    k8s-app: elasticsearch
+    {{- include "edgedelta.onprem.labels" . | nindent 4 }}
+{{- end }}

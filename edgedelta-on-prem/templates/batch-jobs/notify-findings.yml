@@ -1,0 +1,62 @@
+{{- if and .Values.batchJobs.notifyFindings.enabled .Values.elasticsearch.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: notify-findings
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    k8s-app: batchjob
+    {{- include "edgedelta.onprem.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.batchJobs.notifyFindings.cronString | default "*/5 * * * *" | quote }}
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: notify-findings
+            image: {{ .Values.repository }}/batchjob:on-prem-{{ .Chart.AppVersion }}
+            env:
+              - name: ED_SECRET_PROVIDER
+                value: "env"
+              - name: ELASTICSEARCH_ADMIN_USER
+                value: elastic
+              - name: ED_TRACE_FILES
+                value: "job_manager,span"
+              - name: ED_BACKEND_ON_PREMISE
+                value: "1"
+              - name: ED_DATABASE_TABLE_NAME_PREFIX
+                value: "ed"
+              - name: BACKEND_ON_PREMISE_DYNAMO_ENDPOINT
+                {{- if .Values.database.scylladb.enabled }}
+                value: http://scylladb-service.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:8000
+                {{- else if .Values.database.dynamodb.enabled }}
+                value: http://dynamodb-service.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:8000
+                {{- end }}
+              - name: BACKEND_ON_PREMISE_DYNAMO_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    key: {{ .Values.initializer.accessKeyIdName | default "ed-database-access-key-id" | quote }}
+                    name: {{ .Values.initializer.accessKeyIdName | default "ed-database-access-key-id" | quote }}
+              - name: BACKEND_ON_PREMISE_DYNAMO_SECRET_KEY
+                valueFrom:
+                  secretKeyRef:
+                    key: {{ .Values.initializer.secretKeyName | default "ed-database-secret-key" | quote }}
+                    name: {{ .Values.initializer.secretKeyName | default "ed-database-secret-key" | quote }}
+            command:
+              - /edgedelta/batchjob
+            args:
+              - --mode
+              - prod
+              - --job
+              - notify-findings
+              - --window
+              - {{ .Values.batchJobs.notifyFindings.window | default "5m" | quote }}
+              - --offset
+              - {{ .Values.batchJobs.notifyFindings.offset | default "2m" | quote }}
+              - --timeout
+              - {{ .Values.batchJobs.notifyFindings.timeout | default "3m" | quote }}
+            imagePullPolicy: Always
+          restartPolicy: Never
+{{- end }}

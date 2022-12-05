@@ -57,6 +57,10 @@ spec:
           - name: ED_ON_PREM_INFLUX_ENABLED
             value: "1"
           {{- end }}
+          {{- if .Values.elasticsearch.enabled }}
+          - name: ED_ON_PREM_ELASTIC_ENABLED
+            value: "1"
+          {{- end }}
         command:
           - /configure-site-run-nginx.sh
         resources:
