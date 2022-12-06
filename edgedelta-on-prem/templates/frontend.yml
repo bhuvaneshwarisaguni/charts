@@ -21,7 +21,10 @@ spec:
       {{- if .Values.app.useServiceAccount }}
       serviceAccountName: {{ include "edgedelta.onprem.fullname" . | quote }}
       {{- end }}
-      {{- if .Values.podSecurityContext }}
+      {{- if .Values.app.podSecurityContext }}
+      securityContext:
+        {{- toYaml .Values.app.podSecurityContext | nindent 8 }}
+      {{- else if .Values.podSecurityContext }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       {{- end }}

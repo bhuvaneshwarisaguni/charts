@@ -22,10 +22,14 @@ spec:
       {{- if .Values.influxdb.useServiceAccount }}
       serviceAccountName: {{ include "edgedelta.onprem.fullname" . | quote }}
       {{- end }}
+      {{- if .Values.influxdb.podSecurityContext }}
       securityContext:
-      {{- if .Values.podSecurityContext }}
+        {{- toYaml .Values.influxdb.podSecurityContext | nindent 8 }}
+      {{- else if .Values.podSecurityContext }}
+      securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      {{- else }}
+      {{- else if not .Values.usingOpenShift }}
+      securityContext:
         runAsUser: 1000
         fsGroup: 1000
       {{- end }}

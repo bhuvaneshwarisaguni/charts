@@ -23,9 +23,14 @@ spec:
       serviceAccountName: {{ include "edgedelta.onprem.fullname" . | quote }}
       {{- end }}
       securityContext:
-      {{- if .Values.podSecurityContext }}
+      {{- if .Values.elasticsearch.podSecurityContext }}
+      securityContext:
+        {{- toYaml .Values.elasticsearch.podSecurityContext | nindent 8 }}
+      {{- else if .Values.podSecurityContext }}
+      securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      {{- else }}
+      {{- else if not .Values.usingOpenShift }}
+      securityContext:
         runAsUser: 1000
         fsGroup: 1000
       {{- end }}

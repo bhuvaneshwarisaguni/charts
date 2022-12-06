@@ -42,6 +42,9 @@ api:
   port: 4444
   hostName: ""
   corsOverrides: []
+  # This should be enabled and edited for secure clusters such as OpenShift/EKS
+  # podSecurityContext:
+  #   runAsUser: 1000
 
   replicaCount: 4
   resources:
@@ -65,6 +68,9 @@ app:
   port: 5555
   hostName: ""
   overrideApiUrl: "" # Default is https://<api_host_name>, however if this field is not empty, we will override api url with given one
+  # This should be enabled and edited for secure clusters such as OpenShift/EKS
+  # podSecurityContext:
+  #   runAsUser: 1000
 
   replicaCount: 3
   resources:
@@ -76,6 +82,11 @@ app:
       memory: 20Mi
 
 batchJobs:
+  useServiceAccount: true
+  # This should be enabled and edited for secure clusters such as OpenShift/EKS
+  # podSecurityContext:
+  #   runAsUser: 1000
+
   agentDownDetector:
     enabled: true
     cronString: "*/5 * * * *"
@@ -161,6 +172,10 @@ rehydration:
     enabled: false
     useServiceAccount: true
     pollInterval: 10s
+    # This should be enabled and edited for secure clusters such as OpenShift/EKS
+    # podSecurityContext:
+    #   runAsUser: 1000
+
     resources:
       limits:
         cpu: 200m
@@ -174,6 +189,10 @@ rehydration:
     useServiceAccount: true
     port: 8080
     replicaCount: 1
+    # This should be enabled and edited for secure clusters such as OpenShift/EKS
+    # podSecurityContext:
+    #   runAsUser: 1000
+
     cpuRequest: 1000m
     cpuLimit: 2000m
 
@@ -189,6 +208,10 @@ configtest:
     enabled: false
     useServiceAccount: true
     pollInterval: 5s
+    # This should be enabled and edited for secure clusters such as OpenShift/EKS
+    # podSecurityContext:
+    #   runAsUser: 1000
+
     resources:
       limits:
         cpu: 200m
@@ -203,12 +226,19 @@ configtest:
     port: 8080
     replicaCount: 1
     memoryLimit: 1 # In terms of GB
+    # This should be enabled and edited for secure clusters such as OpenShift/EKS
+    # podSecurityContext:
+    #   runAsUser: 1000
+
     cpuRequest: 100m
     cpuLimit: 200m
 
 initializer:
   enabled: true
   useServiceAccount: true
+  # This should be enabled and edited for secure clusters such as OpenShift/EKS
+  # podSecurityContext:
+  #   runAsUser: 1000
 
   accessKeyIdName: "ed-database-access-key-id"
   secretKeyName: "ed-database-secret-key"
@@ -237,6 +267,9 @@ database:
     image: edgedelta/datastore:v0.1.1
     enabled: false
     useServiceAccount: true
+    # This should be enabled and edited for secure clusters such as OpenShift/EKS
+    # podSecurityContext:
+    #   runAsUser: 1000
 
     resources:
       limits:
@@ -256,6 +289,9 @@ database:
     enabled: true
     useServiceAccount: true
     useDeveloperMode: false
+    # This should be enabled and edited for secure clusters such as OpenShift/EKS
+    # podSecurityContext:
+    #   runAsUser: 1000
 
     useNonRoot:
       enabled: false
@@ -311,6 +347,9 @@ database:
 influxdb:
   enabled: false
   useServiceAccount: true
+  # This should be enabled and edited for secure clusters such as OpenShift/EKS
+  # podSecurityContext:
+  #   runAsUser: 1000
 
   image:
     repository: bitnami/influxdb
@@ -342,6 +381,9 @@ influxdb:
 elasticsearch:
   enabled: false
   useServiceAccount: true
+  # This should be enabled and edited for secure clusters such as OpenShift/EKS
+  # podSecurityContext:
+  #   runAsUser: 1000
 
   # Connect to already existing elastic instance
   connection:

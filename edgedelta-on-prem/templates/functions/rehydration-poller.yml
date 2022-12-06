@@ -22,7 +22,10 @@ spec:
       serviceAccountName: {{ include "edgedelta.onprem.fullname" . | quote }}
       {{- end }}
       terminationGracePeriodSeconds: 10
-      {{- if .Values.podSecurityContext }}
+      {{- if .Values.rehydration.pollerOptions.podSecurityContext }}
+      securityContext:
+        {{- toYaml Values.rehydration.pollerOptions.podSecurityContext | nindent 8 }}
+      {{- else if .Values.podSecurityContext }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       {{- end }}
@@ -41,7 +44,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: "ed-function-org-id" # this is used when function is triggered for an org created in on-prem-initializer(values are hardcoded in tools/on_prem_init/stages.go:52)
-                name: "ed-api-token" 
+                name: "ed-api-token"
             {{- end }}
           - name: ED_API_ENDPOINT
             value: {{ .Values.rehydration.apiEndpoint | quote }}

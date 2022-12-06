@@ -14,6 +14,16 @@ spec:
     spec:
       template:
         spec:
+          {{- if .Values.batchJobs.useServiceAccount }}
+          serviceAccountName: {{ include "edgedelta.onprem.fullname" . | quote }}
+          {{- end }}
+          {{- if .Values.batchJobs.podSecurityContext }}
+          securityContext:
+            {{- toYaml .Values.batchJobs.podSecurityContext | nindent 12 }}
+          {{- else if .Values.podSecurityContext }}
+          securityContext:
+            {{- toYaml .Values.podSecurityContext | nindent 12 }}
+          {{- end }}
           containers:
           - name: correlated-signal
             image: {{ .Values.repository }}/batchjob:on-prem-{{ .Chart.AppVersion }}
