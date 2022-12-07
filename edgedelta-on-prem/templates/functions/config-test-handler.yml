@@ -24,7 +24,7 @@ spec:
       terminationGracePeriodSeconds: 10
       {{- if .Values.configtest.handlerOptions.podSecurityContext }}
       securityContext:
-        {{- toYaml Values.configtest.handlerOptions.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.configtest.handlerOptions.podSecurityContext | nindent 8 }}
       {{- else if .Values.podSecurityContext }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}

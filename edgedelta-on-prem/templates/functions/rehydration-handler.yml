@@ -24,7 +24,7 @@ spec:
       terminationGracePeriodSeconds: 10
       {{- if .Values.rehydration.handlerOptions.podSecurityContext }}
       securityContext:
-        {{- toYaml Values.rehydration.handlerOptions.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.rehydration.handlerOptions.podSecurityContext | nindent 8 }}
       {{- else if .Values.podSecurityContext }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
