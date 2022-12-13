@@ -358,6 +358,8 @@ influxdb:
   port: 8086
   # Required if agents will use influx outside of cluster.
   hostName: ""
+  # Sets the retention period for influx metric bucket. Default retention period is 7 days. 
+  retentionPeriodInDays: 7
 
   resources:
     limits:
