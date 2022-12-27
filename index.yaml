@@ -2,8 +2,18 @@ apiVersion: v1
 entries:
   edgedelta:
   - apiVersion: v2
+    appVersion: v0.1.53-rc1
+    created: "2022-12-27T16:47:48.244629822Z"
+    description: Edge Delta Agent Chart for Kubernetes
+    digest: 90e70cd28263257c6369d7d55f56e6b0787b4446da953c651c8631a11ac86813
+    name: edgedelta
+    type: application
+    urls:
+    - https://edgedelta.github.io/charts/edgedelta-0.1.53-rc1.tgz
+    version: 0.1.53-rc1
+  - apiVersion: v2
     appVersion: v0.1.52
-    created: "2022-12-23T22:27:28.826658741Z"
+    created: "2022-12-27T16:47:48.242938946Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: ca3a42c3e20be81a5938382ca20a3cbf4647328fa60bfd4db3870ef7203f991b
     name: edgedelta
@@ -13,7 +23,7 @@ entries:
     version: 0.1.52
   - apiVersion: v2
     appVersion: v0.1.52-rc3
-    created: "2022-12-23T22:27:28.824882187Z"
+    created: "2022-12-27T16:47:48.242035784Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 3ebe210ef99e5b4be133f6effc0d5ffd183e3306845832361bf8f7e87f8d38a1
     name: edgedelta
@@ -23,7 +33,7 @@ entries:
     version: 0.1.52-rc3
   - apiVersion: v2
     appVersion: v0.1.52-rc2
-    created: "2022-12-23T22:27:28.822704506Z"
+    created: "2022-12-27T16:47:48.241226462Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: beaaf7187a6c5e42d0639d00d472afa266a613f96f7335f8ffe8d97b386bee48
     name: edgedelta
@@ -33,7 +43,7 @@ entries:
     version: 0.1.52-rc2
   - apiVersion: v2
     appVersion: v0.1.52-rc19
-    created: "2022-12-23T22:27:28.82196084Z"
+    created: "2022-12-27T16:47:48.240358769Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 1f8a8a9a20513953e49ddad5c2b8e101a66989fc4b7514210f1a60bd0f91c99c
     name: edgedelta
@@ -43,7 +53,7 @@ entries:
     version: 0.1.52-rc19
   - apiVersion: v2
     appVersion: v0.1.52-rc18
-    created: "2022-12-23T22:27:28.821169247Z"
+    created: "2022-12-27T16:47:48.239506412Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 0434eb11d1dc92e1091c25c4d811832447fa86b98a6db41eeb9147059f5c3754
     name: edgedelta
@@ -53,7 +63,7 @@ entries:
     version: 0.1.52-rc18
   - apiVersion: v2
     appVersion: v0.1.52-rc16
-    created: "2022-12-23T22:27:28.820379477Z"
+    created: "2022-12-27T16:47:48.238576065Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 9f8cd31ac1452bea87f13a945e5579e60224de52985c3322830a9876791bc3ce
     name: edgedelta
@@ -63,7 +73,7 @@ entries:
     version: 0.1.52-rc16
   - apiVersion: v2
     appVersion: v0.1.52-rc15
-    created: "2022-12-23T22:27:28.819592716Z"
+    created: "2022-12-27T16:47:48.237596969Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 9532e8d0339fe3117fa8c3a90866567d76e4fd973df7feca2a9f7bacbbcad7e9
     name: edgedelta
@@ -73,7 +83,7 @@ entries:
     version: 0.1.52-rc15
   - apiVersion: v2
     appVersion: v0.1.52-rc13
-    created: "2022-12-23T22:27:28.818738585Z"
+    created: "2022-12-27T16:47:48.236659615Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 67bf98e41ad18858b254021760c995d559217f73bac16d02fca334e828d4ba2d
     name: edgedelta
@@ -83,7 +93,7 @@ entries:
     version: 0.1.52-rc13
   - apiVersion: v2
     appVersion: v0.1.52-rc12
-    created: "2022-12-23T22:27:28.817954731Z"
+    created: "2022-12-27T16:47:48.235678592Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: f47570a9e60e4a558084830c44f3d9f8f523dad98227214b2f3d4a3de4ca769c
     name: edgedelta
@@ -93,7 +103,7 @@ entries:
     version: 0.1.52-rc12
   - apiVersion: v2
     appVersion: v0.1.52-rc1
-    created: "2022-12-23T22:27:28.817157521Z"
+    created: "2022-12-27T16:47:48.233882059Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: b2120a09cf0132ec61f3093dad224c5127a973e02eeb475ff8253de34ef1f4af
     name: edgedelta
@@ -103,7 +113,7 @@ entries:
     version: 0.1.52-rc1
   - apiVersion: v2
     appVersion: v0.1.51
-    created: "2022-12-23T22:27:28.816398006Z"
+    created: "2022-12-27T16:47:48.231768657Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 5fa6ca311a896a2882dba9b0f5049f2bff3f367f3cd18c18075cc0fd02900a1e
     name: edgedelta
@@ -113,7 +123,7 @@ entries:
     version: 0.1.51
   - apiVersion: v2
     appVersion: v0.1.50
-    created: "2022-12-23T22:27:28.815172695Z"
+    created: "2022-12-27T16:47:48.230995161Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 95c2f890daa976d120f22e90ee2ee1415a4c4e59644d72ebbf2dceb0ee4aef99
     name: edgedelta
@@ -123,7 +133,7 @@ entries:
     version: 0.1.50
   - apiVersion: v2
     appVersion: v0.1.49
-    created: "2022-12-23T22:27:28.813013766Z"
+    created: "2022-12-27T16:47:48.229951556Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 28b03fc219f495919a4d898c8ffa06d8e141a38cfa309c068e6a1e1f9197d907
     name: edgedelta
@@ -133,7 +143,7 @@ entries:
     version: 0.1.49
   - apiVersion: v2
     appVersion: v0.1.48
-    created: "2022-12-23T22:27:28.811752593Z"
+    created: "2022-12-27T16:47:48.229100513Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 0b9dee223451aad087ea8969b9b1ade2262bd622f6c7a7b3bd6931f0fc3b9f5d
     name: edgedelta
@@ -143,7 +153,7 @@ entries:
     version: 0.1.48
   - apiVersion: v2
     appVersion: v0.1.47
-    created: "2022-12-23T22:27:28.810982128Z"
+    created: "2022-12-27T16:47:48.228256659Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: a295b4ec1c99086b9c7afdd083efd9ca50d42b864de960934e1a2c8ad5b1130f
     name: edgedelta
@@ -153,7 +163,7 @@ entries:
     version: 0.1.47
   - apiVersion: v2
     appVersion: v0.1.46
-    created: "2022-12-23T22:27:28.81022228Z"
+    created: "2022-12-27T16:47:48.227501998Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: f4cfcb8f4f5a5d8e0efd7e54480e026ef3a5c0e61addec2e382096ef774a0eab
     name: edgedelta
@@ -163,7 +173,7 @@ entries:
     version: 0.1.46
   - apiVersion: v2
     appVersion: v0.1.45
-    created: "2022-12-23T22:27:28.809525038Z"
+    created: "2022-12-27T16:47:48.226729478Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 5342acf4b53b412c74119c62cd77121e8487f55d8820282079ea8b4b6f76b142
     name: edgedelta
@@ -173,7 +183,7 @@ entries:
     version: 0.1.45
   - apiVersion: v2
     appVersion: v0.1.44
-    created: "2022-12-23T22:27:28.808859763Z"
+    created: "2022-12-27T16:47:48.226015998Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 521fd39991d740740719d9fa7de8e1b39bbf556bf88ce970a734241340267126
     name: edgedelta
@@ -183,7 +193,7 @@ entries:
     version: 0.1.44
   - apiVersion: v2
     appVersion: v0.1.43
-    created: "2022-12-23T22:27:28.808216166Z"
+    created: "2022-12-27T16:47:48.225347557Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: d2e26fbecd99e3573f6fa59083ef1c9eedd09000974ee84f6b91f5b03f3c92c7
     name: edgedelta
@@ -193,7 +203,7 @@ entries:
     version: 0.1.43
   - apiVersion: v2
     appVersion: v0.1.42
-    created: "2022-12-23T22:27:28.807547719Z"
+    created: "2022-12-27T16:47:48.224575111Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 8bce9f04d046d2ca2f654de30e08534d360baf1b0b9863a84eb9db2d0de327bd
     name: edgedelta
@@ -203,7 +213,7 @@ entries:
     version: 0.1.42
   - apiVersion: v2
     appVersion: v0.1.41
-    created: "2022-12-23T22:27:28.806847147Z"
+    created: "2022-12-27T16:47:48.223199429Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: f3cbeaecf0a07f4bf8c194b3261561ac605a8dc04b48d5d9be72b1254b9abe8a
     name: edgedelta
@@ -213,7 +223,7 @@ entries:
     version: 0.1.41
   - apiVersion: v2
     appVersion: v0.1.40
-    created: "2022-12-23T22:27:28.806125444Z"
+    created: "2022-12-27T16:47:48.221747916Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: b547dd3ca8a21775e5dd2b82c103ae5e5eec6371de9612654b56f4eaab40c30b
     name: edgedelta
@@ -223,7 +233,7 @@ entries:
     version: 0.1.40
   - apiVersion: v2
     appVersion: v0.1.39
-    created: "2022-12-23T22:27:28.80449371Z"
+    created: "2022-12-27T16:47:48.219844691Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 29f6d46d03d25345c2ed9f2408e29530dadd8b912cc01e0761e3bbda57f28012
     name: edgedelta
@@ -233,7 +243,7 @@ entries:
     version: 0.1.39
   - apiVersion: v2
     appVersion: v0.1.38
-    created: "2022-12-23T22:27:28.80312229Z"
+    created: "2022-12-27T16:47:48.219170912Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 75004169f3526b92bc9ecb77fda20a1d86e917efe59ed950ba0f68fbc44dbf4a
     name: edgedelta
@@ -243,7 +253,7 @@ entries:
     version: 0.1.38
   - apiVersion: v2
     appVersion: v0.1.37
-    created: "2022-12-23T22:27:28.801870022Z"
+    created: "2022-12-27T16:47:48.218543141Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: f160d6cbc8dae109fd5d6b55ebd254dceb4da38a3f152c724338e3fcf0ab5647
     name: edgedelta
@@ -253,7 +263,7 @@ entries:
     version: 0.1.37
   - apiVersion: v2
     appVersion: v0.1.36
-    created: "2022-12-23T22:27:28.801275178Z"
+    created: "2022-12-27T16:47:48.217936156Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 418306946e471fc2ae21a7f379ded1827beae89d2101589a90849ede4d4be298
     name: edgedelta
@@ -263,7 +273,7 @@ entries:
     version: 0.1.36
   - apiVersion: v2
     appVersion: v0.1.31
-    created: "2022-12-23T22:27:28.800709234Z"
+    created: "2022-12-27T16:47:48.21731307Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 238b8d8f86badb6536203b1c52cdf1a41fde94b22ab44ae6784d589d9ff16c89
     name: edgedelta
@@ -273,7 +283,7 @@ entries:
     version: 0.1.31
   - apiVersion: v2
     appVersion: v0.1.27
-    created: "2022-12-23T22:27:28.800033622Z"
+    created: "2022-12-27T16:47:48.216538606Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 0d8b0a9ee9a7d2a95cf944a2d38572d90c4105dc089fc1a232d6e988365c77a2
     name: edgedelta
@@ -283,7 +293,7 @@ entries:
     version: 0.1.27
   - apiVersion: v2
     appVersion: v0.1.25
-    created: "2022-12-23T22:27:28.799603219Z"
+    created: "2022-12-27T16:47:48.216074562Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: c7e619bfe043f20c9c5422de8266125ee21e7aa710f185e204a84e9a86e1a418
     name: edgedelta
@@ -293,7 +303,7 @@ entries:
     version: 0.1.25
   - apiVersion: v2
     appVersion: v0.1.24
-    created: "2022-12-23T22:27:28.799172916Z"
+    created: "2022-12-27T16:47:48.215662847Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 9f40f3628b2ec9dd65c54f1658e24dd29d73c6818228b49f298022e5ea18ffc3
     name: edgedelta
@@ -303,7 +313,7 @@ entries:
     version: 0.1.24
   - apiVersion: v2
     appVersion: v0.1.23
-    created: "2022-12-23T22:27:28.798759005Z"
+    created: "2022-12-27T16:47:48.215276982Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: d03b6e7e5caada9699316d5011324ff1a2a434edf61d66533af4c1d0497a901d
     name: edgedelta
@@ -313,7 +323,7 @@ entries:
     version: 0.1.23
   - apiVersion: v2
     appVersion: v0.1.22
-    created: "2022-12-23T22:27:28.798396746Z"
+    created: "2022-12-27T16:47:48.21487107Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: dbf183a4d1633c13fab0ffe7b609b106b8ec63e88b9268d9f95893f95fc0c54b
     name: edgedelta
@@ -323,7 +333,7 @@ entries:
     version: 0.1.22
   - apiVersion: v2
     appVersion: v0.1.21
-    created: "2022-12-23T22:27:28.798009891Z"
+    created: "2022-12-27T16:47:48.214442522Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: a9a64a6664ea8d7608ad2b2330af58277779d696efaceb657418a8c4c7bf4e89
     name: edgedelta
@@ -333,7 +343,7 @@ entries:
     version: 0.1.21
   - apiVersion: v2
     appVersion: v0.1.20
-    created: "2022-12-23T22:27:28.797617365Z"
+    created: "2022-12-27T16:47:48.214047608Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 762a145fa5a218ff1540353e780c30eed770af91bd09d2f0e71a01050c3265fc
     name: edgedelta
@@ -343,7 +353,7 @@ entries:
     version: 0.1.20
   - apiVersion: v2
     appVersion: v0.1.19
-    created: "2022-12-23T22:27:28.797038384Z"
+    created: "2022-12-27T16:47:48.213383763Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: cabf03756e2b3c58d6b5fedf5c45cdf823d23d85ef6819f10b56b53e5fcd87e2
     name: edgedelta
@@ -353,7 +363,7 @@ entries:
     version: 0.1.19
   - apiVersion: v2
     appVersion: v0.1.18
-    created: "2022-12-23T22:27:28.796629689Z"
+    created: "2022-12-27T16:47:48.212398111Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: ec560a641d64242dc90d719a90bc3bbc3567d50f34e8c8c3fa422fdfa240167b
     name: edgedelta
@@ -363,7 +373,7 @@ entries:
     version: 0.1.18
   - apiVersion: v2
     appVersion: v0.1.17
-    created: "2022-12-23T22:27:28.796248306Z"
+    created: "2022-12-27T16:47:48.21157201Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 9af2b23ab5ef15a3f36bb4db723808c4e4e51bf7e7f6042572d75d951837e229
     name: edgedelta
@@ -373,7 +383,7 @@ entries:
     version: 0.1.17
   - apiVersion: v2
     appVersion: v0.1.16
-    created: "2022-12-23T22:27:28.795923952Z"
+    created: "2022-12-27T16:47:48.210806014Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: f59e11f60416d42754da7654d2133a33d417943412410d3c0bc8149e494cc7ec
     name: edgedelta
@@ -383,7 +393,7 @@ entries:
     version: 0.1.16
   - apiVersion: v2
     appVersion: v0.1.15
-    created: "2022-12-23T22:27:28.795589236Z"
+    created: "2022-12-27T16:47:48.209673923Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 041dacf9ada613bdb95376fffb69f118ec845626a90722f0f35236966f9f1657
     name: edgedelta
@@ -393,7 +403,7 @@ entries:
     version: 0.1.15
   - apiVersion: v2
     appVersion: v0.1.14
-    created: "2022-12-23T22:27:28.794898812Z"
+    created: "2022-12-27T16:47:48.209365639Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 6fe910313e2acee6a13b531d8fc029905535a0549ca815abe18c4da07c4512b7
     name: edgedelta
@@ -403,7 +413,7 @@ entries:
     version: 0.1.14
   - apiVersion: v2
     appVersion: v0.1.13
-    created: "2022-12-23T22:27:28.794248272Z"
+    created: "2022-12-27T16:47:48.209040431Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: a6142f42a2c546604b7cda6649f419f7614f9cbb4b90a8b665f1b0ff46b2afbf
     name: edgedelta
@@ -413,7 +423,7 @@ entries:
     version: 0.1.13
   - apiVersion: v2
     appVersion: v0.1.12
-    created: "2022-12-23T22:27:28.793632468Z"
+    created: "2022-12-27T16:47:48.208683782Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 434fa4bc1aed45e61aacd34e57001ea83df3ffcbfd7fe786b71f42dd4b1791e6
     name: edgedelta
@@ -423,7 +433,7 @@ entries:
     version: 0.1.12
   - apiVersion: v2
     appVersion: v0.1.11
-    created: "2022-12-23T22:27:28.792990732Z"
+    created: "2022-12-27T16:47:48.208383559Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 0ef0cf5e44902504d0a90fbb0edb245af88ae36a3021ad3605e6e8113aaab037
     name: edgedelta
@@ -433,7 +443,7 @@ entries:
     version: 0.1.11
   - apiVersion: v2
     appVersion: v0.1.10
-    created: "2022-12-23T22:27:28.792341775Z"
+    created: "2022-12-27T16:47:48.208078963Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: ca035da23393ffa39e555a89cb3b2bb716d50799b88842b0fecc498e3d278992
     name: edgedelta
@@ -443,7 +453,7 @@ entries:
     version: 0.1.10
   - apiVersion: v2
     appVersion: v0.1.9
-    created: "2022-12-23T22:27:28.827689552Z"
+    created: "2022-12-27T16:47:48.246776863Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 860f0dbae9ac71810c41e63001b697860285a211465e95db625b12898afd01ea
     name: edgedelta
@@ -453,7 +463,7 @@ entries:
     version: 0.1.9
   - apiVersion: v2
     appVersion: v0.1.8
-    created: "2022-12-23T22:27:28.827412124Z"
+    created: "2022-12-27T16:47:48.246213959Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: ec315c873fb627a3da7d52e2a80a4dcbc29535819c06f71e48880fe4f3215be7
     name: edgedelta
@@ -463,7 +473,7 @@ entries:
     version: 0.1.8
   - apiVersion: v2
     appVersion: v0.1.7
-    created: "2022-12-23T22:27:28.827150236Z"
+    created: "2022-12-27T16:47:48.245695997Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 19db5b85c147903dfd9d1140c45a7b7a8a96a207b3bd56a4b342ea5cd843f9bd
     name: edgedelta
@@ -473,7 +483,7 @@ entries:
     version: 0.1.7
   - apiVersion: v2
     appVersion: v0.1.6
-    created: "2022-12-23T22:27:28.826930095Z"
+    created: "2022-12-27T16:47:48.245239405Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 2498b3e79c24af90f35700a9eef50451c7924238bf38bfca1abb2c1da37ad43d
     name: edgedelta
@@ -483,7 +493,7 @@ entries:
     version: 0.1.6
   - apiVersion: v2
     appVersion: v0.1.5
-    created: "2022-12-23T22:27:28.813509034Z"
+    created: "2022-12-27T16:47:48.230206911Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 7a165ee781ed72acc73f8f4e07aee3ccc982bc8bce32ea2342bceab8f1ffaff6
     name: edgedelta
@@ -493,7 +503,7 @@ entries:
     version: 0.1.5
   - apiVersion: v2
     appVersion: v0.1.4
-    created: "2022-12-23T22:27:28.804996817Z"
+    created: "2022-12-27T16:47:48.220070443Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 330a105ec88894152808d883d5d036e59de78e19bf7b167e3ce90258e57db349
     name: edgedelta
@@ -503,7 +513,7 @@ entries:
     version: 0.1.4
   - apiVersion: v2
     appVersion: v0.1.3
-    created: "2022-12-23T22:27:28.800254863Z"
+    created: "2022-12-27T16:47:48.216790803Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 98380526ae46321c7a43977e0de8b43a49efe3138802989c2dd1064710f40b48
     name: edgedelta
@@ -513,7 +523,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: v0.1.2
-    created: "2022-12-23T22:27:28.797251449Z"
+    created: "2022-12-27T16:47:48.213641393Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: bef6a6a8094738dd2f2b44a8e626f55ab43c410e9d66cef66a7b4bb863f68b2f
     name: edgedelta
@@ -523,7 +533,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: v0.1.1
-    created: "2022-12-23T22:27:28.791768484Z"
+    created: "2022-12-27T16:47:48.207781803Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 73ee3076b559195ca13fa170ea2662d64ef5071a7f7302ae589630261213f8fb
     name: edgedelta
@@ -533,7 +543,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: v0.1.0
-    created: "2022-12-23T22:27:28.791557941Z"
+    created: "2022-12-27T16:47:48.207567114Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: b6f16691abb711156d2ca8d3515d58128429827327fafcf0aad0dbced65a3b2d
     name: edgedelta
@@ -543,7 +553,7 @@ entries:
     version: 0.1.0
   - apiVersion: v2
     appVersion: v0.0.100
-    created: "2022-12-23T22:27:28.789695504Z"
+    created: "2022-12-27T16:47:48.205601488Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: f9c93c034918f6e29521c7a3dd79992e315265691b885d60f771c40e4c6cac46
     name: edgedelta
@@ -553,7 +563,7 @@ entries:
     version: 0.0.100
   - apiVersion: v2
     appVersion: v0.0.99
-    created: "2022-12-23T22:27:28.791344908Z"
+    created: "2022-12-27T16:47:48.207354701Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: af8758ad043f8ae23287c3920ee9b967738a02cb14d99a924170a338afdf7196
     name: edgedelta
@@ -563,7 +573,7 @@ entries:
     version: 0.0.99
   - apiVersion: v2
     appVersion: v0.0.98
-    created: "2022-12-23T22:27:28.791154357Z"
+    created: "2022-12-27T16:47:48.207113097Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 6f9adbe0e8327a2065d0c2da4ffb91101ab7b0226d862c1442abc3d894ca62bb
     name: edgedelta
@@ -573,7 +583,7 @@ entries:
     version: 0.0.98
   - apiVersion: v2
     appVersion: v0.0.97
-    created: "2022-12-23T22:27:28.790945333Z"
+    created: "2022-12-27T16:47:48.206899637Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 8d04824fa2a3ebc1ac2ba1562489fd671a231957138bd205be7c041e800da9f3
     name: edgedelta
@@ -583,7 +593,7 @@ entries:
     version: 0.0.97
   - apiVersion: v2
     appVersion: v0.0.96
-    created: "2022-12-23T22:27:28.790746534Z"
+    created: "2022-12-27T16:47:48.206728602Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 1a22a36a150ce158277edc481b9f6c192ff62b119a378d64a0ee5ace07386cb5
     name: edgedelta
@@ -593,7 +603,7 @@ entries:
     version: 0.0.96
   - apiVersion: v2
     appVersion: v0.0.95
-    created: "2022-12-23T22:27:28.790574026Z"
+    created: "2022-12-27T16:47:48.20654979Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 3297dfd3a0f78cc9a988f3ba45ee84eab040afa95aa65e4f651de609c7a10218
     name: edgedelta
@@ -603,7 +613,7 @@ entries:
     version: 0.0.95
   - apiVersion: v2
     appVersion: v0.0.94
-    created: "2022-12-23T22:27:28.790401351Z"
+    created: "2022-12-27T16:47:48.206363651Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 7ed707f7b8031c999386861c643f825174b941442b8d123973272b19fab55d87
     name: edgedelta
@@ -613,7 +623,7 @@ entries:
     version: 0.0.94
   - apiVersion: v2
     appVersion: v0.0.93
-    created: "2022-12-23T22:27:28.790216238Z"
+    created: "2022-12-27T16:47:48.206173645Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 4193882cf89448e3e72225d71ba459325a12c74f1f0e782e5a168e7c62a16565
     name: edgedelta
@@ -623,7 +633,7 @@ entries:
     version: 0.0.93
   - apiVersion: v2
     appVersion: v0.0.91
-    created: "2022-12-23T22:27:28.790039009Z"
+    created: "2022-12-27T16:47:48.20597323Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 2a3cdde6ba81e9318b0648829c8448057cf2e2b78decb76ae07a87b044c614e8
     name: edgedelta
@@ -633,7 +643,7 @@ entries:
     version: 0.0.91
   - apiVersion: v2
     appVersion: v0.0.89
-    created: "2022-12-23T22:27:28.789878931Z"
+    created: "2022-12-27T16:47:48.205796244Z"
     description: Edge Delta Agent Chart for Kubernetes
     digest: 2ddf9ca6899d7d394f777eddc3fa8a5886a233b7d00bde7e9c8c51db50ad352c
     name: edgedelta
@@ -644,7 +654,7 @@ entries:
   edgedelta-on-prem:
   - apiVersion: v2
     appVersion: v0.1.24
-    created: "2022-12-23T22:27:29.081461096Z"
+    created: "2022-12-27T16:47:48.514119709Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -667,7 +677,7 @@ entries:
     version: 0.1.24
   - apiVersion: v2
     appVersion: v0.1.23
-    created: "2022-12-23T22:27:29.064193563Z"
+    created: "2022-12-27T16:47:48.495464315Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -690,7 +700,7 @@ entries:
     version: 0.1.23
   - apiVersion: v2
     appVersion: v0.1.22
-    created: "2022-12-23T22:27:29.05142179Z"
+    created: "2022-12-27T16:47:48.481713145Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -713,7 +723,7 @@ entries:
     version: 0.1.22
   - apiVersion: v2
     appVersion: v0.1.21
-    created: "2022-12-23T22:27:29.03678909Z"
+    created: "2022-12-27T16:47:48.465459075Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -736,7 +746,7 @@ entries:
     version: 0.1.21
   - apiVersion: v2
     appVersion: v0.1.20
-    created: "2022-12-23T22:27:29.019579648Z"
+    created: "2022-12-27T16:47:48.447183761Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -759,7 +769,7 @@ entries:
     version: 0.1.20
   - apiVersion: v2
     appVersion: v0.1.19
-    created: "2022-12-23T22:27:28.992532687Z"
+    created: "2022-12-27T16:47:48.417773495Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -782,7 +792,7 @@ entries:
     version: 0.1.19
   - apiVersion: v2
     appVersion: v0.1.18
-    created: "2022-12-23T22:27:28.978955003Z"
+    created: "2022-12-27T16:47:48.403739149Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -805,7 +815,7 @@ entries:
     version: 0.1.18
   - apiVersion: v2
     appVersion: v0.1.17
-    created: "2022-12-23T22:27:28.964296148Z"
+    created: "2022-12-27T16:47:48.388727266Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -828,7 +838,7 @@ entries:
     version: 0.1.17
   - apiVersion: v2
     appVersion: v0.1.16
-    created: "2022-12-23T22:27:28.947474432Z"
+    created: "2022-12-27T16:47:48.370951603Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -851,7 +861,7 @@ entries:
     version: 0.1.16
   - apiVersion: v2
     appVersion: v0.1.15
-    created: "2022-12-23T22:27:28.93506278Z"
+    created: "2022-12-27T16:47:48.357931338Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -874,7 +884,7 @@ entries:
     version: 0.1.15
   - apiVersion: v2
     appVersion: v0.1.14
-    created: "2022-12-23T22:27:28.919807459Z"
+    created: "2022-12-27T16:47:48.339824553Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -897,7 +907,7 @@ entries:
     version: 0.1.14
   - apiVersion: v2
     appVersion: v0.1.13
-    created: "2022-12-23T22:27:28.904301052Z"
+    created: "2022-12-27T16:47:48.327401588Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -920,7 +930,7 @@ entries:
     version: 0.1.13
   - apiVersion: v2
     appVersion: v0.1.12
-    created: "2022-12-23T22:27:28.892067281Z"
+    created: "2022-12-27T16:47:48.313071824Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -943,7 +953,7 @@ entries:
     version: 0.1.12
   - apiVersion: v2
     appVersion: v0.1.11
-    created: "2022-12-23T22:27:28.880087765Z"
+    created: "2022-12-27T16:47:48.299182313Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -966,7 +976,7 @@ entries:
     version: 0.1.11
   - apiVersion: v2
     appVersion: v0.1.10
-    created: "2022-12-23T22:27:28.864616747Z"
+    created: "2022-12-27T16:47:48.285489694Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -989,7 +999,7 @@ entries:
     version: 0.1.10
   - apiVersion: v2
     appVersion: v0.1.9
-    created: "2022-12-23T22:27:29.169920315Z"
+    created: "2022-12-27T16:47:48.606582008Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -1012,7 +1022,7 @@ entries:
     version: 0.1.9
   - apiVersion: v2
     appVersion: v0.1.8
-    created: "2022-12-23T22:27:29.157144982Z"
+    created: "2022-12-27T16:47:48.593941609Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -1035,7 +1045,7 @@ entries:
     version: 0.1.8
   - apiVersion: v2
     appVersion: v0.1.7
-    created: "2022-12-23T22:27:29.145980119Z"
+    created: "2022-12-27T16:47:48.579860797Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -1058,7 +1068,7 @@ entries:
     version: 0.1.7
   - apiVersion: v2
     appVersion: v0.1.6
-    created: "2022-12-23T22:27:29.133517621Z"
+    created: "2022-12-27T16:47:48.56603934Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -1081,7 +1091,7 @@ entries:
     version: 0.1.6
   - apiVersion: v2
     appVersion: v0.1.5
-    created: "2022-12-23T22:27:29.118207827Z"
+    created: "2022-12-27T16:47:48.552661308Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -1104,7 +1114,7 @@ entries:
     version: 0.1.5
   - apiVersion: v2
     appVersion: v0.1.4
-    created: "2022-12-23T22:27:29.107445866Z"
+    created: "2022-12-27T16:47:48.539191237Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -1127,7 +1137,7 @@ entries:
     version: 0.1.4
   - apiVersion: v2
     appVersion: v0.1.3
-    created: "2022-12-23T22:27:29.092098818Z"
+    created: "2022-12-27T16:47:48.527095156Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -1150,7 +1160,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: v0.1.2
-    created: "2022-12-23T22:27:29.004534322Z"
+    created: "2022-12-27T16:47:48.431266056Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -1173,7 +1183,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: v0.1.1
-    created: "2022-12-23T22:27:28.852729052Z"
+    created: "2022-12-27T16:47:48.271971959Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -1196,7 +1206,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: v0.1.0
-    created: "2022-12-23T22:27:28.840993968Z"
+    created: "2022-12-27T16:47:48.260699067Z"
     dependencies:
     - condition: openFaas.enabled
       name: openfaas
@@ -1217,4 +1227,4 @@ entries:
     urls:
     - https://edgedelta.github.io/charts/edgedelta-on-prem-0.1.0.tgz
     version: 0.1.0
-generated: "2022-12-23T22:27:28.789278974Z"
+generated: "2022-12-27T16:47:48.205134855Z"
