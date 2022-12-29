@@ -39,7 +39,7 @@ spec:
       containers:
       - name: openfaas-initializer
         # This image should be manually built and pushed (both in gcr and docker) with given version whenever a change occurs in the image
-        image: {{ .Values.repository }}/faas-init:2022-12-13-09-52-30
+        image: {{ .Values.repository }}/faas-init:2022-12-29-11-16-29
         command:
           - /bin/bash
           - -c
@@ -143,7 +143,7 @@ data:
           {{- else }}
           GOGC: "20"
           {{- end }}
-          GOMEMLIMIT: "{{ div (mul .Values.rehydration.memoryLimit 9) 10 }}G" # This value should be less than memory limit of the pod, ideally 90% of the limit
+          GOMEMLIMIT: "{{ div (mul .Values.rehydration.memoryLimit 9) 10 }}GiB" # This value should be less than memory limit of the pod, ideally 90% of the limit
           GODEBUG: "madvdontneed=1"
           {{- if .Values.rehydration.concurrency }}
           ED_REHYDRATION_CONCURRENCY_LIMIT: "{{ .Values.rehydration.concurrency }}"

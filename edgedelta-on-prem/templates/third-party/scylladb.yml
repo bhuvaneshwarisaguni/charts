@@ -64,6 +64,14 @@ spec:
               containerName: scylladb
               divisor: "1"
               resource: limits.cpu
+        readinessProbe:
+          httpGet:
+            path: "/"
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 50
         resources:
           {{- toYaml .Values.database.scylladb.resources | nindent 12 }}
         imagePullPolicy: Always

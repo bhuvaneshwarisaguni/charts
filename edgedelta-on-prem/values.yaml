@@ -398,9 +398,13 @@ elasticsearch:
 
     region: ""
 
+    port: 9200 # elastic service port when image is used
+    # Required if agents will use elastic outside of cluster and elastic image is enabled
+    hostName: ""
+
   # when image is enabled, a password can be optionally provided in connection section to override default value ("elastic-password")
   # username will be automatically set to "elastic"
-  # and the instance address will be http://elasticsearch-service.edgedelta-backend.svc.cluster.local:9200
+  # and the instance address will be http://elasticsearch-service.edgedelta-backend.svc.cluster.local:$port
 
   image:
     enabled: false # when enabled, a single node cluster elasticsearch with the provided resources in this section will be deployed.

@@ -12,16 +12,28 @@ metadata:
     helm.sh/hook-delete-policy: hook-failed
 spec:
   tls:
+  {{- if and .Values.api.enabled .Values.api.hostName }}
   - hosts:
     - {{ .Values.api.hostName | quote }}
     secretName: tls-backend-secret
+  {{- end }}
+  {{- if and .Values.app.enabled .Values.app.hostName }}
   - hosts:
     - {{ .Values.app.hostName | quote }}
     secretName: tls-frontend-secret
+  {{- end }}
+  {{- if and .Values.influxdb.enabled .Values.influxdb.hostName }}
   - hosts:
     - {{ .Values.influxdb.hostName | quote }}
     secretName: tls-influxdb-secret
+  {{- end }}
+  {{- if and .Values.elasticsearch.enabled .Values.elasticsearch.connection.hostName }}
+  - hosts:
+    - {{ .Values.elasticsearch.connection.hostName | quote }}
+    secretName: tls-elasticsearch-secret
+  {{- end }}
   rules:
+    {{- if and .Values.api.enabled .Values.api.hostName }}
     - host: {{ .Values.api.hostName | quote }}
       http:
         paths:
@@ -32,6 +44,8 @@ spec:
                   number: {{ .Values.api.port | default 4444 }}
             path: /
             pathType: Prefix
+    {{- end }}
+    {{- if and .Values.app.enabled .Values.app.hostName }}
     - host: {{ .Values.app.hostName | quote }}
       http:
         paths:
@@ -42,6 +56,8 @@ spec:
                   number: {{ .Values.app.port | default 5555 }}
             path: /
             pathType: Prefix
+    {{- end }}
+    {{- if and .Values.influxdb.enabled .Values.influxdb.hostName }}
     - host: {{ .Values.influxdb.hostName | quote }}
       http:
         paths:
@@ -52,4 +68,17 @@ spec:
                   number: {{ .Values.influxdb.port | default 8086 }}
             path: /
             pathType: Prefix
+    {{- end }}
+    {{- if and .Values.elasticsearch.enabled .Values.elasticsearch.connection.hostName }}
+    - host: {{ .Values.elasticsearch.connection.hostName | quote }}
+      http:
+        paths:
+          - backend:
+              service:
+                name: elasticsearch-service
+                port:
+                  number: {{ .Values.elasticsearch.connection.port | default 9200 }}
+            path: /
+            pathType: Prefix
+    {{- end }}
 {{- end }}

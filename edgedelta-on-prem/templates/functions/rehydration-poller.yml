@@ -40,14 +40,12 @@ spec:
           - name: ED_ORG_ID
             {{- if .Values.rehydration.orgId }}
             value: {{ .Values.rehydration.orgId | quote }}
-            {{- else }}
+            {{- else if .Values.initializer.provisionOrgID }}
             valueFrom:
               secretKeyRef:
                 key: "ed-function-org-id" # this is used when function is triggered for an org created in on-prem-initializer(values are hardcoded in tools/on_prem_init/stages.go:52)
                 name: "ed-api-token"
             {{- end }}
-          - name: ED_API_ENDPOINT
-            value: {{ .Values.rehydration.apiEndpoint | quote }}
           {{- if .Values.openFaas.enabled }}
           - name: ED_OPENFAAS_GATEWAY
             value: "http://gateway-external.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:8080"
@@ -61,11 +59,38 @@ spec:
           - name: ED_AGENT_TAGS_FILTER
             value: {{ .Values.rehydration.agentTagsFilter | quote }}
           {{- end }}
+          {{- if or .Values.database.dynamodb.enabled .Values.database.scylladb.enabled }} # full on-prem case
+          - name: ED_ON_PREM_DYNAMO_ENDPOINT
+            {{- if .Values.database.scylladb.enabled }}
+            value: http://scylladb-service.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:8000
+            {{- else if .Values.database.dynamodb.enabled }}
+            value: http://dynamodb-service.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:8000
+            {{- end }}
+          - name: ED_REMOTE_REPOSITORY_MODE
+            value: "full-on-prem"
+          - name: ED_DATABASE_TABLE_NAME_PREFIX
+            value: "ed"
+          - name: ED_ON_PREM_DYNAMO_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                key: {{ .Values.initializer.accessKeyIdName | default "ed-database-access-key-id" | quote }}
+                name: {{ .Values.initializer.accessKeyIdName | default "ed-database-access-key-id" | quote }}
+          - name: ED_ON_PREM_DYNAMO_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                key: {{ .Values.initializer.secretKeyName | default "ed-database-secret-key" | quote }}
+                name: {{ .Values.initializer.secretKeyName | default "ed-database-secret-key" | quote }}
+          {{- else }} # hybrid on-prem case
+          - name: ED_REMOTE_REPOSITORY_MODE
+            value: "hybrid-on-prem"
           - name: ED_REMOTE_TOKEN
             valueFrom:
               secretKeyRef:
                 key: {{ .Values.rehydration.tokenSecretName | default "ed-api-token" | quote }}
                 name: {{ .Values.rehydration.tokenSecretName | default "ed-api-token" | quote }}
+          - name: ED_API_ENDPOINT
+            value: {{ .Values.rehydration.apiEndpoint | quote }}
+          {{- end }}
         resources:
           {{- toYaml .Values.rehydration.pollerOptions.resources | nindent 10 }}
         imagePullPolicy: Always

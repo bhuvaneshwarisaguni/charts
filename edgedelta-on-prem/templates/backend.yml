@@ -156,7 +156,12 @@ spec:
           {{- else }}
           {{- if .Values.elasticsearch.image.enabled }}
           - name: BACKEND_ON_PREMISE_ELASTIC_ADDRESSES
-            value: "http://elasticsearch-service.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:9200"
+          {{- $eport := .Values.elasticsearch.connection.port | default 9200 }}
+          {{- if .Values.elasticsearch.connection.hostName }}
+            value: "https://{{ .Values.elasticsearch.connection.hostName }}"
+          {{- else }}
+            value: "http://elasticsearch-service.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:{{ $eport }}"
+          {{- end }}
           {{- else }}
           - name: BACKEND_ON_PREMISE_ELASTIC_ADDRESSES
             value: {{ .Values.elasticsearch.connection.addresses | quote }}
@@ -188,6 +193,15 @@ spec:
           - None
           - --api_port
           - {{ .Values.api.port | default 4444 | quote }}
+        readinessProbe:
+          httpGet:
+            path: "/probes/ready"
+            port: {{ .Values.api.port | default 4444 }}
+            scheme: "HTTP"
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 1
+          failureThreshold: 10
         resources:
           {{- toYaml .Values.api.resources | nindent 12 }}
         imagePullPolicy: Always
