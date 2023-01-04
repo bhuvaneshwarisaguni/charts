@@ -20,10 +20,26 @@ data:
       - {{ .Release.Namespace }}:ds/{{ include "edgedelta.fullname" . }}:spec.template.spec.containers[0].image
     api:
       base_url: {{ .Values.agentUpdater.baseURL }}
+      auth:
+        header_key: X-ED-Config-Id
+        header_value: {{- if .Values.apiKey }} {{ .Values.apiKey }}{{- else }} {{ .Values.secretApiKey.value }}{{- end }}
       latest_tag:
         endpoint: {{ .Values.agentUpdater.endpoint }}
-        auth:
-          header_key: X-ED-Config-Id
-          header_value: {{- if .Values.apiKey }} {{ .Values.apiKey }}{{- else }} {{ .Values.secretApiKey.value }}{{- end }}
+      log_upload:
+        enabled: {{ .Values.agentUpdater.logUploader.enabled }}
+        method: PUT
+        encoding:
+          type: raw
+          options:
+            delimiter: '\n'
+        compression: gzip
+        presigned_upload_url:
+          endpoint: {{ .Values.agentUpdater.logUploader.presignedUploadURLEndpoint }}
+          params:
+            query:
+              size: "{{ "{{" }} .ctx.size {{ "}}" }}"
+              host: "{{ "{{" }} .env.KUBE_NODE {{ "}}" }}"
+              format: json
+              compression: gzip
 {{- end }}
 {{- end }}

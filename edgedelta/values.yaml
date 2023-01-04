@@ -232,3 +232,6 @@ agentUpdater:
   image: gcr.io/edgedelta/agent-updater:latest
   baseURL: https://api.edgedelta.com/v1
   endpoint: /versioning/latest
+  logUploader:
+    enabled: true
+    presignedUploadURLEndpoint: /agent_updater/self_logs_upload_link
