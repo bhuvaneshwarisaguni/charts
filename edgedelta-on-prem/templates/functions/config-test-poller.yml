@@ -86,8 +86,8 @@ spec:
           - name: ED_REMOTE_TOKEN
             valueFrom:
               secretKeyRef:
-                key: {{ .Values.configtest.tokenSecretName | default "ed-api-token" | quote }}
-                name: {{ .Values.configtest.tokenSecretName | default "ed-api-token" | quote }}
+                key: {{ .Values.api.tokenSecretName | default "ed-api-token" | quote }}
+                name: {{ .Values.api.tokenSecretName | default "ed-api-token" | quote }}
           - name: ED_API_ENDPOINT
             value: {{ .Values.configtest.apiEndpoint | quote }}
           {{- end }}

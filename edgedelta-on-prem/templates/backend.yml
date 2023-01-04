@@ -125,6 +125,10 @@ spec:
           {{- else if .Values.api.corsOverrides }}
             value: {{ .Values.api.corsOverrides | join "," | quote }}
           {{- end }}
+          {{- else }}
+          {{- $aport := .Values.app.port | default 5555 }}
+          - name: ED_CORS_OVERRIDE
+            value: "http://localhost:{{ $aport }}"
           {{- end }}
           {{- if .Values.influxdb.enabled }}
           - name: ED_BACKEND_ON_PREMISE_INFLUX

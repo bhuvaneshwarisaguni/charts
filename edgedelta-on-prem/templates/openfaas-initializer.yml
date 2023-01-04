@@ -39,7 +39,7 @@ spec:
       containers:
       - name: openfaas-initializer
         # This image should be manually built and pushed (both in gcr and docker) with given version whenever a change occurs in the image
-        image: {{ .Values.repository }}/faas-init:2022-12-29-12-08-38
+        image: {{ .Values.repository }}/faas-init:2023-01-04-12-24-14
         command:
           - /bin/bash
           - -c
@@ -133,7 +133,7 @@ data:
           {{- else }}
           ED_REMOTE_REPOSITORY_MODE: "hybrid-on-prem"
           ED_API_ENDPOINT: {{ .Values.rehydration.apiEndpoint | quote }}
-          ED_REMOTE_TOKEN_FILE: "/var/openfaas/secrets/{{ .Values.rehydration.tokenSecretName | default "ed-api-token" }}"
+          ED_REMOTE_TOKEN_FILE: "/var/openfaas/secrets/{{ .Values.api.tokenSecretName | default "ed-api-token" }}"
           {{- end }}
           ED_MAX_INFLIGHT: "1"
           ED_REHYDRATION_BLOCK_TIMEOUT: 5m
@@ -153,7 +153,7 @@ data:
           - {{ .Values.initializer.accessKeyIdName | default "ed-database-access-key-id" | quote }}
           - {{ .Values.initializer.secretKeyName | default "ed-database-secret-key" | quote }}
         {{- else }}
-          - {{ .Values.rehydration.tokenSecretName | default "ed-api-token" | quote }}
+          - {{ .Values.api.tokenSecretName | default "ed-api-token" | quote }}
         {{- end }}
         labels:
           com.openfaas.scale.min: {{ .Values.openFaas.minRehydrationCount }}
@@ -190,7 +190,7 @@ data:
           {{- else }}
           ED_REMOTE_REPOSITORY_MODE: "hybrid-on-prem"
           ED_API_ENDPOINT: {{ .Values.configtest.apiEndpoint | quote }}
-          ED_REMOTE_TOKEN_FILE: "/var/openfaas/secrets/{{ .Values.configtest.tokenSecretName | default "ed-api-token" }}"
+          ED_REMOTE_TOKEN_FILE: "/var/openfaas/secrets/{{ .Values.api.tokenSecretName | default "ed-api-token" }}"
           {{- end }}
           ED_MAX_INFLIGHT: "1"
           STORE_PORT: "8085"
@@ -200,7 +200,7 @@ data:
           - {{ .Values.initializer.accessKeyIdName | default "ed-database-access-key-id" | quote }}
           - {{ .Values.initializer.secretKeyName | default "ed-database-secret-key" | quote }}
         {{- else }}
-          - {{ .Values.configtest.tokenSecretName | default "ed-api-token" | quote }}
+          - {{ .Values.api.tokenSecretName | default "ed-api-token" | quote }}
         {{- end }}
         labels:
           com.openfaas.scale.min: {{ .Values.openFaas.minConfigTestCount }}

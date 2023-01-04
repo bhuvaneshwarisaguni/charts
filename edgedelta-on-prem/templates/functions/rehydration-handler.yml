@@ -52,8 +52,8 @@ spec:
           - name: ED_REMOTE_TOKEN
             valueFrom:
               secretKeyRef:
-                key: {{ .Values.rehydration.tokenSecretName | default "ed-api-token" | quote }}
-                name: {{ .Values.rehydration.tokenSecretName | default "ed-api-token" | quote }}
+                key: {{ .Values.api.tokenSecretName | default "ed-api-token" | quote }}
+                name: {{ .Values.api.tokenSecretName | default "ed-api-token" | quote }}
           - name: ED_MAX_INFLIGHT
             value: "1"
           - name: ED_REHYDRATION_BLOCK_TIMEOUT

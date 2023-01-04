@@ -16,11 +16,9 @@ openFaas: # Valid for all deployment types
   proLicense: ""
 
 ingress:
-  shouldInstall: true
   enabled: true
 
 clusterIssuer:
-  shouldInstall: true
   enabled: true
   letsEncryptEmail: ""
 
@@ -39,6 +37,18 @@ api:
   enabled: true
   useServiceAccount: true
   masterSecret: "" # It will use a randomly-generated UUIDv4 if not set
+
+  # When rehydration poller or configtest poller enabled without a token, initializer component will create an API token for these components.
+  # In this case both of these tools will use the same token.
+
+  # Users can also supply the tokens for these components via `token` option, it is also considered for both of the tools also.
+  # So this generated token should have the following permissions
+  # Rehydration - All Current and Future Rehydrations - Write
+  # Integration - All Current and Future Rehydrations - Read
+  # Agent Configurations - All Current and Future Agent Configurations - Read
+  token: ""
+  tokenSecretName: "ed-api-token"
+
   port: 4444
   hostName: ""
   corsOverrides: []
@@ -157,8 +167,6 @@ rehydration:
   orgId: ""
   mode: "prod"
   pushBatchSize: "10000"
-  token: ""
-  tokenSecretName: "ed-api-token"
   apiEndpoint: "" # It should be empty for "full" deployment mode. Default is https://api.edgedelta.com
   memoryLimit: 16 # In terms of GB
   goGC: 20 # It designates the aggressiveness of the garbage collection. Less is more aggressive. Default it 20.
@@ -199,8 +207,6 @@ rehydration:
 configtest:
   orgId: ""
   mode: "prod"
-  token: ""
-  tokenSecretName: "ed-api-token"
   apiEndpoint: "" # It should be empty for "full" deployment mode. Default is https://api.edgedelta.com
   agentTagsFilter: "" # Comma separated list of agent tags to perform configtest
 
@@ -471,52 +477,3 @@ openfaas:
   autoscaler:
     enabled: false # Set to true when license is not empty
   clusterRole: false # Set to true when license is not empty
-
-ingress-nginx:
-  controller:
-    # This should be enabled and edited for secure clusters such as OpenShift
-    # podSecurityContext:
-    #   runAsUser: 1000
-    replicaCount: 1
-    image:
-      repository: k8s.gcr.io/ingress-nginx/controller # or edgedelta/ingress-nginx-controller
-      tag: v1.2.0
-      digest: ""
-    admissionWebhooks:
-      patch:
-        # This should be enabled and edited for secure clusters such as OpenShift
-        # runAsUser: 1000
-        image:
-          repository: k8s.gcr.io/ingress-nginx/kube-webhook-certgen # or edgedelta/ingress-nginx-kube-webhook-certgen
-          tag: v1.1.1
-          digest: ""
-
-cert-manager:
-  # This should be enabled and edited for secure clusters such as OpenShift
-  # securityContext:
-  #   runAsUser: 1000
-  installCRDs: true
-  image:
-    repository: quay.io/jetstack/cert-manager-controller # or edgedelta/jetstack-cert-manager-controller
-    tag: "v1.8.0"
-  webhook:
-    # This should be enabled and edited for secure clusters such as OpenShift
-    # securityContext:
-    #   runAsUser: 1000
-    image:
-      repository: quay.io/jetstack/cert-manager-webhook # or edgedelta/jetstack-cert-manager-webhook
-      tag: "v1.8.0"
-  cainjector:
-    # This should be enabled and edited for secure clusters such as OpenShift
-    # securityContext:
-    #   runAsUser: 1000
-    image:
-      repository: quay.io/jetstack/cert-manager-cainjector # or edgedelta/jetstack-cert-manager-cainjector
-      tag: "v1.8.0"
-  startupapicheck:
-    # This should be enabled and edited for secure clusters such as OpenShift
-    # securityContext:
-    #   runAsUser: 1000
-    image:
-      repository: quay.io/jetstack/cert-manager-ctl # or edgedelta/jetstack-cert-manager-ctl
-      tag: "v1.8.0"
