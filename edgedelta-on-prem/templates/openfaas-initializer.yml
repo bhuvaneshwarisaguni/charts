@@ -39,7 +39,7 @@ spec:
       containers:
       - name: openfaas-initializer
         # This image should be manually built and pushed (both in gcr and docker) with given version whenever a change occurs in the image
-        image: {{ .Values.repository }}/faas-init:2023-01-04-12-24-14
+        image: {{ .Values.repository }}/faas-init:2023-01-06-09-39-33
         command:
           - /bin/bash
           - -c
