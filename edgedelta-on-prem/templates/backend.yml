@@ -51,12 +51,6 @@ spec:
             value: "ed"
           - name: API_TOKEN_MASTER_SECRET
             value: {{ .Values.api.masterSecret | default uuidv4 | quote }}
-          - name: OKTA_TOKEN
-            value: {{ .Values.okta.token | quote }}
-          - name: OKTA_CLIENT_ID
-            value: {{ .Values.okta.clientId | quote }}
-          - name: OKTA_NEW_USER_PASSWORD
-            value: {{ .Values.okta.newUserPassword | quote }}
           {{- if .Values.api.login.saml.enabled }}
           - name: ENABLE_SAML
             value: "1"
@@ -82,15 +76,11 @@ spec:
               secretKeyRef:
                 key: {{ .Values.initializer.samlCertName | default "saml-cert" | quote }}
                 name: {{ .Values.initializer.samlCertName | default "saml-cert" | quote }}
-          {{- if .Values.api.login.saml.alwaysUseSaml }}
+          {{- end }}
           - name: WITHOUT_OKTA
             value: "1"
-          {{- end }}
-          {{- end }}
           {{- if .Values.api.login.disableAuthentication }}
           - name: ED_DISABLE_AUTHENTICATION
-            value: "1"
-          - name: WITHOUT_OKTA
             value: "1"
           {{- end }}
           - name: BACKEND_ON_PREMISE_DYNAMO_ENDPOINT

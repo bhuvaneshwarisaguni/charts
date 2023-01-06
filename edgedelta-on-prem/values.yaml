@@ -25,14 +25,6 @@ clusterIssuer:
   namespaceLabeler:
     image: bitnami/kubectl:1.22.9
 
-# This section will be used by both API and UI component
-# These needs to be set in advance by using Okta admin panel and generating a new application
-okta:
-  token: ""
-  clientId: ""
-  newUserPassword: ""
-  redirectUrl: ""
-
 api:
   enabled: true
   useServiceAccount: true

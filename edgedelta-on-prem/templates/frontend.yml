@@ -42,10 +42,6 @@ spec:
           {{- end }}
           - name: ED_CONFIG_WIZARD_ID
             value: "f9085b59-7c81-4197-bc0a-cac8a839832c"
-          - name: OKTA_AUTH_CLIENT_ID
-            value: {{ .Values.okta.clientId | quote }}
-          - name: OKTA_AUTH_REDIRECT_URL
-            value: {{ .Values.okta.redirectUrl | quote }}
           - name: ED_FRONTEND_PORT
             value: {{ .Values.app.port | default 5555 | quote }}
           {{- if .Values.api.login.saml.alwaysUseSaml }}
