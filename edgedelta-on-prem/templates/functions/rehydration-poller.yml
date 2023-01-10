@@ -44,7 +44,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: "ed-function-org-id" # this is used when function is triggered for an org created in on-prem-initializer(values are hardcoded in tools/on_prem_init/stages.go:52)
-                name: "ed-api-token"
+                name: "ed-function-org-id"
             {{- end }}
           {{- if .Values.openFaas.enabled }}
           - name: ED_OPENFAAS_GATEWAY

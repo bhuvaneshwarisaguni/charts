@@ -41,10 +41,30 @@ spec:
             value: {{ .Values.configtest.mode | default "prod" | quote }}
           - name: ED_HANDLER_NAME
             value: "configtest"
-          - name: ED_API_ENDPOINT
-            value: {{ .Values.configtest.apiEndpoint | quote }}
           - name: ED_REMOTE_REPOSITORY
             value: "1"
+          {{- if or .Values.database.dynamodb.enabled .Values.database.scylladb.enabled }} # full on-prem case
+          - name: ED_ON_PREM_DYNAMO_ENDPOINT
+            {{- if .Values.database.scylladb.enabled }}
+            value: http://scylladb-service.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:8000
+            {{- else if .Values.database.dynamodb.enabled }}
+            value: http://dynamodb-service.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:8000
+            {{- end }}
+          - name: ED_REMOTE_REPOSITORY_MODE
+            value: "full-on-prem"
+          - name: ED_DATABASE_TABLE_NAME_PREFIX
+            value: "ed"
+          - name: ED_ON_PREM_DYNAMO_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                key: {{ .Values.initializer.accessKeyIdName | default "ed-database-access-key-id" | quote }}
+                name: {{ .Values.initializer.accessKeyIdName | default "ed-database-access-key-id" | quote }}
+          - name: ED_ON_PREM_DYNAMO_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                key: {{ .Values.initializer.secretKeyName | default "ed-database-secret-key" | quote }}
+                name: {{ .Values.initializer.secretKeyName | default "ed-database-secret-key" | quote }}
+          {{- else }} # hybrid on-prem case
           - name: ED_REMOTE_REPOSITORY_MODE
             value: "hybrid-on-prem"
           - name: ED_REMOTE_TOKEN
@@ -52,6 +72,9 @@ spec:
               secretKeyRef:
                 key: {{ .Values.api.tokenSecretName | default "ed-api-token" | quote }}
                 name: {{ .Values.api.tokenSecretName | default "ed-api-token" | quote }}
+          - name: ED_API_ENDPOINT
+            value: {{ .Values.configtest.apiEndpoint | quote }}
+          {{- end }}
           - name: ED_MAX_INFLIGHT
             value: "1"
           - name: STORE_PORT
