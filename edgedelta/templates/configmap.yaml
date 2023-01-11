@@ -18,6 +18,18 @@ data:
       image: agent
       paths:
       - {{ .Release.Namespace }}:ds/{{ include "edgedelta.fullname" . }}:spec.template.spec.containers[0].image
+    {{- if .Values.aggregatorProps.enabled }}
+    - id: {{- if .Values.apiKey }} {{ .Values.apiKey }}{{- else }} {{ .Values.secretApiKey.value }}{{- end }}-aggregator
+      image: agent
+      paths:
+      - {{ .Release.Namespace }}:deploy/{{ include "edgedelta.fullname" . }}-aggregator:spec.template.spec.containers[0].image
+    {{- end }}
+    {{- if .Values.archiverProps.enabled }}
+    - id: {{- if .Values.apiKey }} {{ .Values.apiKey }}{{- else }} {{ .Values.secretApiKey.value }}{{- end }}-archiver
+      image: agent
+      paths:
+      - {{ .Release.Namespace }}:deploy/{{ include "edgedelta.fullname" . }}-archiver:spec.template.spec.containers[0].image
+    {{- end }}
     log:
       custom_tags:
         host: "{{ "{{" }} .env.KUBE_POD {{ "}}" }}"
