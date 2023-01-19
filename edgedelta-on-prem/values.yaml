@@ -380,6 +380,7 @@ influxdb:
 
 elasticsearch:
   enabled: false
+  useAsMetricBackend: false
   useServiceAccount: true
   # This should be enabled and edited for secure clusters such as OpenShift/EKS
   # podSecurityContext:

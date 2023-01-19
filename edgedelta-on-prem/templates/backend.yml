@@ -142,6 +142,10 @@ spec:
                 key: "INFLUX_ORG_ID"
           {{- end }}
           {{- if .Values.elasticsearch.enabled }}
+          {{- if .Values.elasticsearch.useAsMetricBackend }}
+          - name: USE_ELASTIC_METRIC_BACKEND
+            value: "1"
+          {{- end }}
           - name: ED_BACKEND_ON_PREMISE_ELASTIC
             value: "1"
           {{- if .Values.elasticsearch.connection.cloud_id }}

@@ -57,6 +57,10 @@ spec:
             value: "1"
           {{- end }}
           {{- if .Values.elasticsearch.enabled }}
+          {{- if .Values.elasticsearch.useAsMetricBackend }}
+          - name: ED_USE_ELASTIC_METRIC_BACKEND
+            value: "1"
+          {{- end }}
           - name: ED_ON_PREM_ELASTIC_ENABLED
             value: "1"
           {{- end }}
