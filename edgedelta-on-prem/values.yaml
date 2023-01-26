@@ -250,6 +250,12 @@ initializer:
   samlDomain: ""
   samlSkipSSLVerify: false # default is false
 
+  # To be able to use elasticsearch some resources must be created. 
+  # If this is set to true, those resources must be created manually.
+  # To create them from code, we need create index/manage index privileges. 
+  # Customers may choose to do these operations manually instead, by providing true to this flag.
+  skipElasticsearchResourceCreation: false
+
   provisionOrgID: "" # if set an organization will be provisioned with this id
 
   resources:

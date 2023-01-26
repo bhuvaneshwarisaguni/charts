@@ -67,11 +67,8 @@ spec:
           {{- else }} # hybrid on-prem case
           - name: ED_REMOTE_REPOSITORY_MODE
             value: "hybrid-on-prem"
-          - name: ED_REMOTE_TOKEN
-            valueFrom:
-              secretKeyRef:
-                key: {{ .Values.api.tokenSecretName | default "ed-api-token" | quote }}
-                name: {{ .Values.api.tokenSecretName | default "ed-api-token" | quote }}
+          - name: ED_REMOTE_TOKEN_FILE
+            value: "/etc/{{ .Values.api.tokenSecretName | default "ed-api-token" }}/{{ .Values.api.tokenSecretName | default "ed-api-token" }}"
           - name: ED_API_ENDPOINT
             value: {{ .Values.configtest.apiEndpoint | quote }}
           {{- end }}
@@ -89,6 +86,16 @@ spec:
             cpu: {{ .Values.configtest.handlerOptions.cpuRequest | default "100m" }}
             memory: {{ .Values.configtest.memoryLimit | default 1 }}Gi
         imagePullPolicy: Always
+      {{- if and (not .Values.database.dynamodb.enabled) (not .Values.database.scylladb.enabled) }}
+        volumeMounts:
+        - name: ed-api-token
+          mountPath: "/etc/{{ .Values.api.tokenSecretName | default "ed-api-token" }}"
+          readOnly: true
+      volumes:
+      - name: ed-api-token
+        secret:
+          secretName: {{ .Values.api.tokenSecretName | default "ed-api-token" | quote }}
+      {{- end }}
 ---
 apiVersion: v1
 kind: Service
