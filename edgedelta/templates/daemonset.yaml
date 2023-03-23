@@ -224,8 +224,7 @@ spec:
             {{- if .Values.tracerProps.enabled }}
             - name: TRACER_SERVER_PORT
               value: "{{ .Values.tracerProps.port }}"
-            {{- else }}
-            - name: ED_DISABLE_TRACER
+            - name: ED_ENABLE_TRAFFIC_TRACER
               value: "1"
             {{- end }}
           {{- if .Values.tracerProps.enabled }}
