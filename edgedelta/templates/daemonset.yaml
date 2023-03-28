@@ -226,10 +226,10 @@ spec:
               value: "{{ .Values.tracerProps.port }}"
             - name: ED_ENABLE_TRAFFIC_TRACER
               value: "1"
-            {{- if .Values.aggregatorProps.enabled || .Values.archiverProps.enabled }}
+            {{- end }}
+            {{- if and (.Values.tracerProps.enabled) (or .Values.aggregatorProps.enabled .Values.archiverProps.enabled) }}
             - name: ED_SERVICE_DNS_REQUIRED
               value: "1"
-            {{- end }}
             {{- end }}
           {{- if .Values.tracerProps.enabled }}
           securityContext:
