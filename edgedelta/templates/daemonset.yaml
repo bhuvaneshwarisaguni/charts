@@ -268,6 +268,9 @@ spec:
             - name: proc
               mountPath: /proc
             {{- end }}
+            {{- if and .Values.volumeProps .Values.volumeProps.volumeMounts }}
+              {{- toYaml .Values.volumeProps.volumeMounts | nindent 12 }}
+            {{- end }}
         {{- if .Values.httpRecorderProps.enabled }}
         # httprecorder container
         - name: {{ .Chart.Name }}-httprecorder
@@ -340,6 +343,9 @@ spec:
         - name: proc
           hostPath:
             path: /proc
+        {{- end }}
+        {{- if and .Values.volumeProps .Values.volumeProps.volumes }}
+          {{- toYaml .Values.volumeProps.volumes | nindent 8 }}
         {{- end }}
 {{- if .Values.httpRecorderProps.enabled }}
 ---
