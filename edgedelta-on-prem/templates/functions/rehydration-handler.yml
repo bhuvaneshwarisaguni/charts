@@ -94,6 +94,10 @@ spec:
           - name: ED_REHYDRATION_CONCURRENCY_LIMIT
             value: "{{ .Values.rehydration.concurrency }}"
           {{- end }}
+          {{- if .Values.rehydration.handlerOptions.clickhouseRhConnection }}
+          - name: CLICKHOUSE_RH_CONNECTION
+            value: "{{ .Values.rehydration.handlerOptions.clickhouseRhConnection }}"
+          {{- end }}
         resources:
           limits:
             cpu: {{ .Values.rehydration.cpuLimit | default "2000m" }}

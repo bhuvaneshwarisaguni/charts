@@ -187,6 +187,7 @@ rehydration:
   handlerOptions: # only valid if deployment mode is "only_rehydration"
     enabled: false
     useServiceAccount: true
+    clickhouseRhConnection: ""
     port: 8080
     replicaCount: 1
     # This should be enabled and edited for secure clusters such as OpenShift/EKS
@@ -195,6 +196,31 @@ rehydration:
 
     cpuRequest: 1000m
     cpuLimit: 2000m
+
+clickhouse:
+  enabled: false
+  useServiceAccount: false
+  image: clickhouse/clickhouse-server:23.2-alpine
+  shardsCount: 6
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 8Gi
+    requests:
+      cpu: 1500m
+      memory: 8Gi
+  # This should not exceed the memory limit
+  maxMemoryUsage: 8000000000
+  # This should be enabled and edited for secure clusters such as OpenShift/EKS
+  # podSecurityContext:
+  #   runAsUser: 1000
+  keeperResources:
+    limits:
+      cpu: 1
+      memory: 2Gi
+    requests:
+      cpu: 1
+      memory: 1Gi
 
 configtest:
   orgId: ""
