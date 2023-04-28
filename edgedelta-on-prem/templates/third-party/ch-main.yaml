@@ -58,7 +58,7 @@ spec:
     clusters:
       - name: default
         layout:
-          shardsCount: {{ .Values.clickhouse.shards | default 1 }}
+          shardsCount: {{ .Values.clickhouse.shardsCount | default 1 }}
     profiles:
       default/default_database_engine: "Atomic"
       # default/max_threads: 8

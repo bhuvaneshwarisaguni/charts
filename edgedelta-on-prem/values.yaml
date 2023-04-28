@@ -201,7 +201,7 @@ clickhouse:
   enabled: false
   useServiceAccount: false
   image: clickhouse/clickhouse-server:23.2-alpine
-  shardsCount: 6
+  shardsCount: 1
   resources:
     limits:
       cpu: 2000m
