@@ -413,6 +413,9 @@ influxdb:
 elasticsearch:
   enabled: false
   useAsMetricBackend: false
+  # Should be set true when we don't want to use elastic for logs (pattern/sample/edac)
+  # This can be useful when elastic is considered for only metric storage.
+  disableAsLogBackend: false 
   useServiceAccount: true
   # This should be enabled and edited for secure clusters such as OpenShift/EKS
   # podSecurityContext:
@@ -502,3 +505,19 @@ openfaas:
   autoscaler:
     enabled: false # Set to true when license is not empty
   clusterRole: false # Set to true when license is not empty
+
+# Enable `preGiven` field to use below data-preferences
+# Agent uses this to decide whether to send a dataset to ED backend or not
+data_preferences:
+  preGiven: false
+  agent_self_log: false
+  alert: true
+  archive: false
+  cluster_pattern: true
+  cluster_sample: true
+  edac: true
+  event: true
+  health: true
+  heartbeat: true
+  log: true
+  metric: true

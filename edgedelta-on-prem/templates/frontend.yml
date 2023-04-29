@@ -60,6 +60,10 @@ spec:
           {{- if .Values.elasticsearch.useAsMetricBackend }}
           - name: ED_USE_ELASTIC_METRIC_BACKEND
             value: "1"
+          {{- if .Values.elasticsearch.disableAsLogBackend }}
+          - name: ED_DISABLE_ELASTIC_AS_LOG_BACKEND
+            value : "1"
+          {{- end }}
           {{- end }}
           - name: ED_ON_PREM_ELASTIC_ENABLED
             value: "1"
