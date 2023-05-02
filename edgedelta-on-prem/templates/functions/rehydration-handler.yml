@@ -72,7 +72,7 @@ spec:
           - name: ED_REMOTE_TOKEN_FILE
             value: "/etc/{{ .Values.api.tokenSecretName | default "ed-api-token" }}/{{ .Values.api.tokenSecretName | default "ed-api-token" }}"
           - name: ED_API_ENDPOINT
-            value: {{ .Values.configtest.apiEndpoint | quote }}
+            value: {{ .Values.rehydration.apiEndpoint | quote }}
           {{- end }}
           - name: ED_MAX_INFLIGHT
             value: "1"
@@ -98,13 +98,10 @@ spec:
           - name: CLICKHOUSE_RH_CONNECTION
             value: "{{ .Values.rehydration.handlerOptions.clickhouseRhConnection }}"
           {{- end }}
+          - name: ED_CH_CHUNK_SIZE_MB
+            value: {{ .Values.rehydration.chunkSize | default "125" | quote }}
         resources:
-          limits:
-            cpu: {{ .Values.rehydration.cpuLimit | default "2000m" }}
-            memory: {{ .Values.rehydration.memoryLimit | default 16 }}Gi
-          requests:
-            cpu: {{ .Values.rehydration.cpuRequest | default "1000m" }}
-            memory: {{ .Values.rehydration.memoryLimit | default 16 }}Gi
+          {{- toYaml .Values.rehydration.handlerOptions.resources | nindent 10 }}
         imagePullPolicy: Always
       {{- if and (not .Values.database.dynamodb.enabled) (not .Values.database.scylladb.enabled) }}
         volumeMounts:

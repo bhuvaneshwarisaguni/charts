@@ -80,7 +80,7 @@ metadata:
   name: clickhouse-keepers
   namespace: {{ .Release.Namespace | quote }}
 spec:
-  type: ClusterIP
+  clusterIP: None
   ports:
     - name: rest
       port: 8123
@@ -117,6 +117,7 @@ spec:
     metadata:
       labels:
         k8s-app: clickhouse-keeper
+        {{- include "edgedelta.onprem.labels" . | nindent 8 }}
     spec:
       {{- if .Values.clickhouse.useServiceAccount }}
       serviceAccountName: {{ include "edgedelta.onprem.fullname" . | quote }}
