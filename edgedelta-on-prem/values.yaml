@@ -194,11 +194,11 @@ rehydration:
 
     resources:
       limits:
-        cpu: 7000m
-        memory: 25000Mi
+        cpu: 2
+        memory: 8Gi
       requests:
-        cpu: 7000m
-        memory: 25000Mi
+        cpu: 1
+        memory: 8Gi
 
 clickhouse:
   enabled: false
@@ -438,6 +438,17 @@ elasticsearch:
     port: 9200 # elastic service port when image is used
     # Required if agents will use elastic outside of cluster and elastic image is enabled
     hostName: ""
+
+  tls: # Optional TLS configuration. Can be used for self signed certificates.
+    disable_verify: false # Option to disable a TLS verification of a certificate. Default is false.
+    ca_file: # Absolute path to CA certificate file
+    ca_path: # Absolute path to scan CA certificate files
+    crt_file: # Absolute path to Certificate file
+    key_file: # Absolute path to private Key file
+    key_password: # Optional password for key file
+    client_auth_type: # possible selections: noclientcert, requestclientcert, requireanyclientcert, verifyclientcertifgiven, requireandverifyclientcert
+    min_version: # Minimum version for TLS, default is TLSv1_2
+    max_version: # Maximum version for TLS ex: TLSv1_3
 
   # when image is enabled, a password can be optionally provided in connection section to override default value ("elastic-password")
   # username will be automatically set to "elastic"
