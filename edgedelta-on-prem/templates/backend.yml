@@ -142,6 +142,42 @@ spec:
                 key: "INFLUX_ORG_ID"
           {{- end }}
           {{- if .Values.elasticsearch.enabled }}
+          {{- if .Values.elasticsearch.tls.disable_verify }}
+          - name: BACKEND_ON_PREMISE_ELASTIC_DISABLE_TLS_VERIFICATION
+            value: "1"
+          {{- end }}
+          {{- if .Values.elasticsearch.tls.ca_file }}
+          - name: BACKEND_ON_PREMISE_ELASTIC_TLS_CA_FILE_PATH
+            value: {{ .Values.elasticsearch.tls.ca_file | quote }}
+          {{- end }}
+          {{- if .Values.elasticsearch.tls.ca_path }}
+          - name: BACKEND_ON_PREMISE_ELASTIC_TLS_CA_PATH
+            value: {{ .Values.elasticsearch.tls.ca_path | quote }}
+          {{- end }}
+          {{- if .Values.elasticsearch.tls.crt_file }}
+          - name: BACKEND_ON_PREMISE_ELASTIC_TLS_CRT_FILE
+            value: {{ .Values.elasticsearch.tls.crt_file | quote }}
+          {{- end }}
+          {{- if .Values.elasticsearch.tls.key_file }}  
+          - name: BACKEND_ON_PREMISE_ELASTIC_TLS_KEY_FILE
+            value: {{ .Values.elasticsearch.tls.key_file | quote }}
+          {{- end }}
+          {{- if .Values.elasticsearch.tls.key_password }}  
+          - name: BACKEND_ON_PREMISE_ELASTIC_TLS_KEY_PASSWORD
+            value: {{ .Values.elasticsearch.tls.key_password | quote }}
+          {{- end }}
+          {{- if .Values.elasticsearch.tls.client_auth_type }}
+          - name: BACKEND_ON_PREMISE_ELASTIC_TLS_CLIENT_AUTH_TYPE
+            value: {{ .Values.elasticsearch.tls.client_auth_type | quote }}
+          {{- end }}
+          {{- if .Values.elasticsearch.tls.min_version }}
+          - name: BACKEND_ON_PREMISE_ELASTIC_TLS_MIN_VER
+            value: {{ .Values.elasticsearch.tls.min_version | quote }}
+          {{- end }}
+          {{- if .Values.elasticsearch.tls.max_version }}
+          - name: BACKEND_ON_PREMISE_ELASTIC_TLS_MAX_VER
+            value: {{ .Values.elasticsearch.tls.max_version | quote }}
+          {{- end }}
           {{- if .Values.elasticsearch.useAsMetricBackend }}
           - name: USE_ELASTIC_METRIC_BACKEND
             value: "1"
