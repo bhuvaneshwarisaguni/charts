@@ -1,0 +1,70 @@
+{{- if .Values.database.dynamodb.backupRestore.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: dynamodb-backup
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    k8s-app: batchjob
+    {{- include "edgedelta.onprem.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.database.dynamodb.backupRestore.cronString | default "0 0 * * *" | quote }}
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          {{- if .Values.batchJobs.useServiceAccount }}
+          serviceAccountName: {{ include "edgedelta.onprem.fullname" . | quote }}
+          {{- end }}
+          {{- if .Values.batchJobs.podSecurityContext }}
+          securityContext:
+            {{- toYaml .Values.batchJobs.podSecurityContext | nindent 12 }}
+          {{- else if .Values.podSecurityContext }}
+          securityContext:
+            {{- toYaml .Values.podSecurityContext | nindent 12 }}
+          {{- end }}
+          containers:
+          - name: dynamodb-backup
+            image: {{ .Values.repository }}/dynamodump:v0.1.2
+            args:
+              - --mode
+              - {{ .Values.database.dynamodb.backupRestore.mode | default "backup" }}
+              - --host
+              - dynamodb-service.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}
+              - --port
+              - "8000"
+              - --srcTable
+              - "*"
+              - --archive
+              - tar
+              - --bucket
+              - {{ .Values.database.dynamodb.backupRestore.storage.bucketName }}
+              {{- if .Values.database.dynamodb.backupRestore.storage.bucketEndpoint }}
+              - --bucketEndpoint
+              - {{ .Values.database.dynamodb.backupRestore.storage.bucketEndpoint }}
+              {{- end }}
+              {{- if .Values.database.dynamodb.backupRestore.storage.accessKey }}
+              - --accessKey
+              - {{ .Values.database.dynamodb.backupRestore.storage.accessKey }}
+              {{- end }}
+              {{- if .Values.database.dynamodb.backupRestore.storage.secretKey }}
+              - --secretKey
+              - {{ .Values.database.dynamodb.backupRestore.storage.secretKey }}
+              {{- end }}
+              {{- if .Values.database.dynamodb.backupRestore.storage.profile }}
+              - --profile
+              - {{ .Values.database.dynamodb.backupRestore.storage.profile }}
+              {{- end }}
+              {{- if .Values.database.dynamodb.backupRestore.storage.region }}
+              - --region
+              - {{ .Values.database.dynamodb.backupRestore.storage.region }}
+              {{- end }}
+              {{- if .Values.database.dynamodb.backupRestore.storage.disableTlsVerification }}
+              - --disableTlsVerification
+              {{- end }}
+              {{- if eq .Values.database.dynamodb.backupRestore.mode "restore" }}
+              - --noConfirm
+              {{- end }}
+          restartPolicy: Never
+{{- end }}

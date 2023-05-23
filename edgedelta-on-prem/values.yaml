@@ -315,6 +315,21 @@ database:
     storageResources:
       requests:
         storage: 10Gi
+    
+    backupRestore:
+      enabled: false
+      # mode can be "backup" or "restore"
+      mode: backup
+      cronString: "0 * * * *"
+      storage:
+        bucketName: ""
+        bucketRegion: ""
+        # S3 compatible endpoint to use when using a non-AWS S3 provider
+        bucketEndpoint: ""
+        accessKey: ""
+        secretKey: ""
+        profile: ""
+        disableTlsVerification: false
 
   # Rest is the configuration for third party dependencies and Helm charts
   scylladb:
