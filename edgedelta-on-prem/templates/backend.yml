@@ -99,13 +99,8 @@ spec:
               secretKeyRef:
                 key: {{ .Values.initializer.secretKeyName | default "ed-database-secret-key" | quote }}
                 name: {{ .Values.initializer.secretKeyName | default "ed-database-secret-key" | quote }}
-          {{- if .Values.openFaas.enabled }}
-          - name: ED_OPENFAAS_GATEWAY
-            value: "http://gateway-external.{{ .Release.Namespace }}.{{ .Values.dnsSuffix }}:8080"
-          {{- else }}
           - name: ED_DISABLE_OPENFAAS
             value: "1"
-          {{- end }}
           {{- if or .Values.app.hostName .Values.api.corsOverrides }}
           - name: ED_CORS_OVERRIDE
           {{- if and .Values.app.hostName .Values.api.corsOverrides }}

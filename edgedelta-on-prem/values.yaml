@@ -8,13 +8,6 @@ usingOpenShift: false # Should be true for OpenShift for smooth procedure
 # podSecurityContext:
 #   runAsUser: 1000
 
-openFaas: # Valid for all deployment types
-  enabled: true
-  minRehydrationCount: 1
-  minConfigTestCount: 1
-  isFullDeployment: true
-  proLicense: ""
-
 ingress:
   enabled: true
 
@@ -483,57 +476,6 @@ elasticsearch:
         memory: 3Gi
 
     storage: 16Gi
-
-openfaas:
-  # securityContext: true # This should be enabled and edited for secure clusters such as OpenShift
-  functionNamespace: "openfaas-fn" # It should be renamed as helm namespace
-  serviceType: "NodePort"
-  basic_auth: false
-  generateBasicAuth: false
-  openfaasPro: false # Set to true when license is not empty
-  ceScaling: false
-  proScaler:
-    image: ghcr.io/openfaasltd/autoscaler:0.2.0 # or edgedelta/openfaas-autoscaler:0.2.0
-    enabled: false # Set to true when license is not empty
-  faasIdler:
-    image: ghcr.io/openfaas/faas-idler-pro:0.4.4 # or edgedelta/openfaas-faas-idler-pro:0.4.4
-    enabled: false # Set to true when license is not empty
-  oidcAuthPlugin:
-    image: ghcr.io/openfaas/openfaas-oidc-plugin:0.5.1 # or edgedelta/openfaas-oidc-plugin:0.5.1
-    enabled: false
-  gateway:
-    image: ghcr.io/openfaas/gateway:0.21.3 # or edgedelta/openfaas-gateway:0.21.3
-    readTimeout: "1h5m"
-    writeTimeout: "1h5m"
-    upstreamTimeout: "1h" # Must be smaller than read/write_timeout
-  basicAuthPlugin:
-    image: ghcr.io/openfaas/basic-auth:0.21.1 # or edgedelta/openfaas-basic-auth:0.21.1
-  faasnetes:
-    image: ghcr.io/openfaas/faas-netes:0.14.1 # or edgedelta/openfaas-faas-netes:0.14.1
-    readTimeout: "1h5m"
-    writeTimeout: "1h5m"
-  operator:
-    image: ghcr.io/openfaas/faas-netes:0.14.1 # or edgedelta/openfaas-faas-netes:0.14.1
-  queueWorkerPro:
-    image: ghcr.io/openfaas/queue-worker-pro:0.1.0-rc5 # or edgedelta/openfaas-queue-worker-pro:0.1.0-rc5
-    enabled: false # Set to true when license is not empty
-  queueWorker:
-    image: ghcr.io/openfaas/queue-worker:0.12.2 # or edgedelta/openfaas-queue-worker:0.12.2
-    ackWait: "1h"
-  prometheus:
-    image: prom/prometheus:v2.11.0
-  alertmanager:
-    image: prom/alertmanager:v0.18.0
-  nats:
-    image: nats-streaming:0.22.0
-    metrics:
-      image: natsio/prometheus-nats-exporter:0.8.0
-      enabled: false
-  ingressOperator:
-    image: ghcr.io/openfaas/ingress-operator:0.6.7 # or edgedelta/openfaas-ingress-operator:0.6.7
-  autoscaler:
-    enabled: false # Set to true when license is not empty
-  clusterRole: false # Set to true when license is not empty
 
 # Enable `preGiven` field to use below data-preferences
 # Agent uses this to decide whether to send a dataset to ED backend or not

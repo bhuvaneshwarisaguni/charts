@@ -26,7 +26,7 @@ spec:
           {{- end }}
           containers:
           - name: dynamodb-backup
-            image: {{ .Values.repository }}/dynamodump:v0.1.2
+            image: {{ .Values.repository }}/dynamodump:v0.1.3
             args:
               - --mode
               - {{ .Values.database.dynamodb.backupRestore.mode | default "backup" }}
@@ -63,8 +63,6 @@ spec:
               {{- if .Values.database.dynamodb.backupRestore.storage.disableTlsVerification }}
               - --disableTlsVerification
               {{- end }}
-              {{- if eq .Values.database.dynamodb.backupRestore.mode "restore" }}
               - --noConfirm
-              {{- end }}
           restartPolicy: Never
 {{- end }}
