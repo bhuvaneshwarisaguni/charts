@@ -192,8 +192,8 @@ spec:
       name: compactor-data
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      {{- if .Values.compactorProps.storage_class }}
-      storageClassName: {{ .Values.compactorProps.storage_class }}
+      {{- if .Values.compactorProps.storageClass }}
+      storageClassName: {{ .Values.compactorProps.storageClass }}
       {{- end }}
       resources:
         requests:
