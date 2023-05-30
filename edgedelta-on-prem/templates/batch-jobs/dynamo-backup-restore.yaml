@@ -26,7 +26,7 @@ spec:
           {{- end }}
           containers:
           - name: dynamodb-backup
-            image: {{ .Values.repository }}/dynamodump:v0.1.3
+            image: {{ .Values.repository }}/dynamodump:v0.1.4
             args:
               - --mode
               - {{ .Values.database.dynamodb.backupRestore.mode | default "backup" }}
