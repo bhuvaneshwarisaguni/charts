@@ -16,7 +16,6 @@ spec:
     matchLabels:
       {{- include "edgedelta.selectorLabels" . | nindent 6 }}
   serviceName: ed-compactor-svc
-  minReadySeconds: 10
   updateStrategy:
     {{- toYaml .Values.compactorProps.updateStrategy | nindent 4 }}
   template:
