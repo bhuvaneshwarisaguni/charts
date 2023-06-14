@@ -100,18 +100,32 @@ spec:
           {{- end }}
           - name: ED_CH_CHUNK_SIZE_MB
             value: {{ .Values.rehydration.chunkSize | default "125" | quote }}
+          {{- if .Values.rehydration.handlerOptions.rehydrationBufferPath }}
+          - name: ED_REHYDRATION_BUFFER_PATH # Path should be an existing directory.
+            value: {{ .Values.rehydration.handlerOptions.rehydrationBufferPath | quote }}
+          {{- end }}
         resources:
           {{- toYaml .Values.rehydration.handlerOptions.resources | nindent 10 }}
         imagePullPolicy: Always
-      {{- if and (not .Values.database.dynamodb.enabled) (not .Values.database.scylladb.enabled) }}
         volumeMounts:
+        {{- if and (not .Values.database.dynamodb.enabled) (not .Values.database.scylladb.enabled) }}
         - name: ed-api-token
           mountPath: "/etc/{{ .Values.api.tokenSecretName | default "ed-api-token" }}"
           readOnly: true
+        {{- end }}
+        {{- if .Values.rehydration.handlerOptions.rehydrationBufferPath }}
+        - name: ed-rehydration-buffer
+          mountPath: {{ .Values.rehydration.handlerOptions.rehydrationBufferPath | quote }}
+        {{- end }}
       volumes:
+      {{- if and (not .Values.database.dynamodb.enabled) (not .Values.database.scylladb.enabled) }}
       - name: ed-api-token
         secret:
           secretName: {{ .Values.api.tokenSecretName | default "ed-api-token" | quote }}
+      {{- end }}
+      {{- if .Values.rehydration.handlerOptions.rehydrationBufferPath }}
+      - name: ed-rehydration-buffer
+        emptyDir: {}
       {{- end }}
 ---
 apiVersion: v1

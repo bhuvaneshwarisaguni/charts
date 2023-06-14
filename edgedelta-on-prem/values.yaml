@@ -181,10 +181,11 @@ rehydration:
     clickhouseRhConnection: "" # if namespace is edgedelta-rehydration "Endpoint=rh-ch-srv.edgedelta-rehydration.svc.cluster.local:9000,Database=default,Username=default,Password="
     port: 8080
     replicaCount: 1
+    rehydrationBufferPath: "" # Creates an emptyDir volume for buffering rehydration files. If empty, it will workingDir
     # This should be enabled and edited for secure clusters such as OpenShift/EKS
     # podSecurityContext:
     #   runAsUser: 1000
-
+    
     resources:
       limits:
         cpu: 2
@@ -322,6 +323,7 @@ database:
         accessKey: ""
         secretKey: ""
         profile: ""
+        restoreFrom: "" # path to the backup file to restore from. If empty, latest backup will be used
         disableTlsVerification: false
 
   # Rest is the configuration for third party dependencies and Helm charts
