@@ -243,7 +243,7 @@ agentUpdater:
     presignedUploadURLEndpoint: /agent_updater/self_logs_upload_link
 
 tracerProps:
-  enabled: false
+  enabled: true
   port: 9595
 
 compactorProps:
