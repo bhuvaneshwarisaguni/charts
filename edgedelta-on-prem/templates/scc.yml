@@ -40,8 +40,6 @@ defaultAddCapabilities: null
 readOnlyRootFilesystem: false
 requiredDropCapabilities:
 - MKNOD
-groups:
-- system:cluster-admins
 users:
 - system:serviceaccount:{{ .Release.Namespace }}:{{ include "edgedelta.onprem.fullname" . }}
 {{- end }}
