@@ -1,9 +1,0 @@
-{{- if .Values.api.token }}
-apiVersion: v1
-kind: Secret
-metadata:
-  name: {{ .Values.api.tokenSecretName | default "ed-api-token" | quote }}
-  namespace: {{ .Release.Namespace | quote }}
-data:
-  {{ .Values.api.tokenSecretName | default "ed-api-token" }}: {{ .Values.api.token | b64enc | quote }}
-{{- end }}
